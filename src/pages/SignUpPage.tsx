@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpWithEmailAndPassword } from "../service/auth";
+import { useRecoilState } from "recoil";
+import { loginState, userState } from "../store/userState";
+import { db } from "../service/firebase";
+import { doc, setDoc, addDoc } from "firebase/firestore";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const [login, setLogin] = useRecoilState(loginState);
+  const [user, setUser] = useRecoilState(userState);
+  const navigate = useNavigate();
+
+  // 이미 로그인한 사람이 회원가입 페이지 접근시 홈페이지로 리다이렉트.
+  useEffect(() => {
+    // if (login || !user) navigate("/");
+    console.log(login);
+    console.log(user);
+  }, []);
 
   const handleInputChange = (e) => {
     if (e.target.name === "email") setEmail(e.target.value);
@@ -16,12 +31,18 @@ const SignUpPage = () => {
     else if (e.target.name === "password") setPassword("");
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = await signUpWithEmailAndPassword(email, password);
-    console.log(data);
+    try {
+      e.preventDefault();
+      const data = await signUpWithEmailAndPassword(email, password);
+      await setDoc(doc(db, "users", data.uid), {
+        userName: data?.displayName || data?.uid,
+        uid: data?.uid,
+      });
+      console.log("data", data.uid);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

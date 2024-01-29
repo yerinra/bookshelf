@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle, logInWithEmailAndPassword } from "../service/auth";
+import { useRecoilState } from "recoil";
+import { loginState, userState } from "../store/userState";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../service/firebase";
 
-const LogInPage = () => {
+const LogInPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const [login, setLogin] = useRecoilState(loginState);
+  const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    if (user || login) navigate("/");
+  }, [user, login]);
 
   const navigate = useNavigate();
 
@@ -21,16 +32,21 @@ const LogInPage = () => {
     try {
       e.preventDefault();
       const data = await logInWithEmailAndPassword(email, password);
-      // console.log(data);
-      if (data) navigate("/");
+      setUser(data?.user?.uid);
+      navigate("/bookshelf");
     } catch (err) {
       // console.log(err);
     }
   };
 
   const handleGoogleLogin = async () => {
-    const data = await signInWithGoogle();
-    console.log(data);
+    try {
+      const data = await signInWithGoogle();
+      setUser(data?.user?.uid);
+      navigate("/bookshelf");
+    } catch (err) {
+      // console.error(err);
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { auth } from "./firebase";
+import { auth, googleProvider } from "./firebase";
 import {
   signInWithPopup,
   signOut,
@@ -70,11 +70,10 @@ export const logInWithEmailAndPassword = async (
 };
 
 export const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+  // const provider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: "select_account" });
   try {
-    const res = await signInWithPopup(auth, provider);
-
+    const res = await signInWithPopup(auth, googleProvider);
     return res;
   } catch (err) {
     console.error(err);
