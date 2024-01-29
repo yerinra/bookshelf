@@ -24,7 +24,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="flex justify-between mx-7 py-3">
+    <nav className="flex justify-between mx-20 py-3">
       <Link to={"/"} className="flex items-center justify-center gap-3">
         <button className="p-2 text-2xl font-extrabold bg-primary rounded-full">
           <BsBookshelf />
@@ -45,7 +45,7 @@ const NavBar = () => {
             >
               내 책장
             </button>
-            <button onClick={logOut} className="btn btn-ghost hidden sm:block">
+            <button onClick={logOut} className="btn btn-ghost hidden md:block">
               로그아웃
             </button>
           </>

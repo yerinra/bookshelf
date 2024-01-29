@@ -31,7 +31,7 @@ const BookDetailPage: React.FC = () => {
             <div>{data.author}</div>
             <div>{data.description}</div>
             <div>{data.publisher}</div>
-
+            <div>{data.itemPage}쪽</div>
             <div>{data.isbn13}</div>
           </section>
         ))}

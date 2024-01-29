@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SearchInput() {
+const SearchInput = () => {
   const [keyword, setKeyword] = useState<string>("");
   const navigate = useNavigate();
   const handleChange = (e) => {
     setKeyword(e.target.value);
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setKeyword("");
     navigate(`/books/${keyword}`);
   };
 
@@ -19,10 +21,13 @@ export default function SearchInput() {
     >
       <input
         type="text"
+        value={keyword}
         placeholder="책의 제목을 입력하세요. "
         className="border-solid border-[1px] border-base-300 rounded-md px-3 py-2 outline-none"
         onChange={handleChange}
       />
     </form>
   );
-}
+};
+
+export default SearchInput;
