@@ -1,31 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { InfiniteQueryObserverResult } from "@tanstack/react-query";
 
 interface ioProps {
+  isLoading: boolean | undefined;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
 }
 
-const useInfiniteScroll = ({ hasNextPage, fetchNextPage }: ioProps) => {
-  const [target, setTarget] = useState<HTMLDivElement | null | undefined>(null);
+const useInfiniteScroll = ({
+  isLoading,
+  hasNextPage,
+  fetchNextPage,
+}: ioProps) => {
+  const io = useRef(null);
+  const scrollRef = useCallback(
+    (target) => {
+      if (isLoading) return;
 
-  const observerCallback = (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    });
-  };
+      if (io.current) io.current.disconnect();
 
-  useEffect(() => {
-    if (!target) return;
+      io.current = new IntersectionObserver((target) => {
+        if (target[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      });
 
-    const observer = new IntersectionObserver(observerCallback);
-    observer.observe(target);
+      if (target) io.current.observe(target);
+    },
+    [fetchNextPage, hasNextPage]
+  );
 
-    return () => observer.unobserve(target);
-  }, [observerCallback, target]);
-
-  return { setTarget };
+  return scrollRef;
 };
+
 export default useInfiniteScroll;
