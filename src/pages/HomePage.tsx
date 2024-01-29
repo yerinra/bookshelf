@@ -6,9 +6,7 @@ const HomePage = () => {
     <div className="mx-7 h-screen flex flex-col justify-center items-center gap-16">
       <p className="text-5xl font-extrabold">
         <span className="bg-primary px-2 leading-snug cursor-none">
-          {/* <span className="text-success hover:text-base-content"> */}
           나만의 책장
-          {/* </span> */}
         </span>
         을 만들어 보세요.
       </p>
@@ -20,7 +18,7 @@ const HomePage = () => {
         <button
           className="btn btn-outline btn-primary text-base-100 px-7"
           onClick={() => {
-            navigate("/help");
+            navigate("/info");
           }}
         >
           무엇을 할 수 있나요?
@@ -31,7 +29,7 @@ const HomePage = () => {
             navigate("/bookshelf");
           }}
         >
-          책장 만들기 &rarr;
+          책장 보러가기 &rarr;
         </button>
       </section>
     </div>
