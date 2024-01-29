@@ -8,24 +8,47 @@ import RoutesPage from "./RoutesPage";
 import { useRecoilState } from "recoil";
 import { loginState, userState } from "../src/store/userState";
 import { useEffect } from "react";
-import { auth } from "./service/firebase";
+import { auth, db } from "./service/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { booksState } from "./store/booksState";
 
 function App() {
   const [login, setLogin] = useRecoilState(loginState);
-  const [user, setUser] = useRecoilState(userState);
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [bookList, setBookList] = useRecoilState(booksState);
+  // const [allTags, setAllTags] = useRecoilState(tagsState);
+
   const queryClient = new QueryClient();
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setLogin(true);
-        setUser(user?.uid);
-      } else {
-        setLogin(false);
+    const getCurrentUser = () => {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          setLogin(true);
+          setCurrentUser(user?.uid);
+        } else {
+          setLogin(false);
+        }
+      });
+    };
+    getCurrentUser();
+  }, [login]);
+
+  useEffect(() => {
+    const getBookList = async () => {
+      if (currentUser) {
+        try {
+          onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
+            const mapped = doc?.docs?.map((doc) => doc?.data());
+            setBookList(mapped);
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
-      console.log("appp", user?.uid);
-    });
-  }, [login, user]);
+    };
+    getBookList();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
