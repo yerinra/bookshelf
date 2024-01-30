@@ -42,6 +42,7 @@ export const fetchBook = async (isbn13: string) => {
       params: {
         itemIdType: "ISBN13",
         itemId: isbn13,
+        cover: "big",
         ttbkey: import.meta.env.VITE_TTB_KEY,
         output: "js",
         Version: 20131101,

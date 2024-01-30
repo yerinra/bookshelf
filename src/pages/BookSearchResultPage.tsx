@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
 import BookCard from "../components/BookCard";
@@ -9,7 +8,7 @@ import { userState } from "../store/userState";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import { booksState } from "../store/booksState";
-import Skeleton from "../components/Skeleton";
+import SkeletonSearchResult from "../components/SkeletonSearchResult";
 
 const BookSearchResultPage: React.FC = (): JSX.Element => {
   const { keyword } = useParams();
@@ -40,9 +39,9 @@ const BookSearchResultPage: React.FC = (): JSX.Element => {
     if (currentUser) getAllBooks();
   }, [currentUser, selectedBook]);
 
-  useEffect(() => {
-    console.log(currentUser);
-  }, []);
+  // useEffect(() => {
+  //   console.log(currentUser);
+  // }, []);
 
   const handleAdd = async (isbn13, title, author, cover) => {
     try {
@@ -65,7 +64,7 @@ const BookSearchResultPage: React.FC = (): JSX.Element => {
   return (
     <>
       <main className="flex-col p-10">
-        {isLoading && <Skeleton key={uuidv4()} />}
+        {isLoading && <SkeletonSearchResult />}
         {data &&
           finalData?.length > 0 &&
           data?.pages.map((v) =>
