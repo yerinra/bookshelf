@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { useParams } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
 import BookCard from "../components/BookCard";
@@ -5,15 +6,10 @@ import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
-import {
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  setDoc,
-} from "firebase/firestore";
+import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import { booksState } from "../store/booksState";
+import Skeleton from "../components/Skeleton";
 
 const BookSearchResultPage: React.FC = (): JSX.Element => {
   const { keyword } = useParams();
@@ -44,9 +40,9 @@ const BookSearchResultPage: React.FC = (): JSX.Element => {
     if (currentUser) getAllBooks();
   }, [currentUser, selectedBook]);
 
-  // useEffect(() => {
-  //   console.log("rerender");
-  // });
+  useEffect(() => {
+    console.log(currentUser);
+  }, []);
 
   const handleAdd = async (isbn13, title, author, cover) => {
     try {
@@ -69,7 +65,7 @@ const BookSearchResultPage: React.FC = (): JSX.Element => {
   return (
     <>
       <main className="flex-col p-10">
-        {isLoading && <div>loading...</div>}
+        {isLoading && <Skeleton key={uuidv4()} />}
         {data &&
           finalData?.length > 0 &&
           data?.pages.map((v) =>
