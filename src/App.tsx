@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { auth, db } from "./service/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { booksState } from "./store/booksState";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
   const [login, setLogin] = useRecoilState(loginState);
@@ -31,8 +32,9 @@ function App() {
         }
       });
     };
+
     getCurrentUser();
-  }, [login]);
+  }, []);
 
   useEffect(() => {
     const getBookList = async () => {
