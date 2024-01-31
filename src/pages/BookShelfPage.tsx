@@ -78,7 +78,6 @@ const BookShelfPage = () => {
   }, [categorizedBooks]);
   const handleTagRemove = async (tagName, isbn13) => {
     try {
-      const bookDocRef = doc(db, "users", currentUser, "books", isbn13);
       await updateDoc(doc(db, "users", currentUser, "books", isbn13), {
         hashtags: arrayRemove(tagName),
       });
@@ -146,17 +145,17 @@ const BookShelfPage = () => {
 
   return (
     <section className="flex flex-col items-center">
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-11/12">
         <h1 className="mt-14 font-bold text-start pl-10">
           {currentUser} 님의 책장
         </h1>
-        <div className="flex flex-col gap-5 mt-5 mb-3 py-5 w-full bg-neutral-50 p-10 rounded-lg">
+        <div className="flex flex-col gap-5 mt-5 mb-3 py-5 border border-base-content p-10 rounded-lg shrink-0">
           <h2 className="font-bold text-start ml-2">나의 태그</h2>
           <div className="flex gap-2 flex-wrap">
             {allTags &&
               allTags.map((tag, i) => (
                 <button
-                  className={`btn btn-xs ${
+                  className={`btn btn-xs btn-outline ${
                     selectedTag && selectedTag == tag && "btn-primary"
                   }`}
                   key={`${tag}-${i}`}
@@ -168,7 +167,7 @@ const BookShelfPage = () => {
           </div>
         </div>
       </div>
-      <main className="max-w-4/5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <main className="max-w-4/5 grid grid-cols-1 md:grid-cols-2 gap-3 shrink-0">
         {bookList.length == 0 && <>책이 없습니다.</>}
 
         {selectedTag &&

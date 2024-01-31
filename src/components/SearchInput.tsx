@@ -23,7 +23,7 @@ const SearchInput = () => {
         type="text"
         value={keyword}
         placeholder="책의 제목을 입력하세요. "
-        className="border-solid border-[1px] border-base-300 rounded-md px-3 py-2 outline-none"
+        className=" rounded-md px-3 py-2 outline-none bg-base-200"
         onChange={handleChange}
       />
     </form>

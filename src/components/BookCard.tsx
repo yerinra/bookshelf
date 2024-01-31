@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { FaCheck } from "react-icons/fa";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { booksState } from "../store/booksState";
 export interface BookResult {
   title: string;
@@ -38,15 +39,16 @@ const BookCard = ({ book, handleAdd }) => {
         <div className="text-gray-400 text-xs">
           {author.length > 30 ? author.slice(0, 30) + " ..." : author}
         </div>
-        {/* <div className="text-xs">{publisher}</div> */}
         <button
           className="btn btn-outline btn-xs max-w-32 mt-1"
           disabled={bookList?.map((v) => v.title).includes(title)}
           onClick={() => handleAdd(isbn13, title, author, cover)}
         >
-          {bookList && bookList?.map((v) => v.title).includes(title)
-            ? "✔️"
-            : "책장에 추가하기"}
+          {bookList && bookList?.map((v) => v.title).includes(title) ? (
+            <FaCheck />
+          ) : (
+            "책장에 추가하기"
+          )}
         </button>
       </div>
     </div>

@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { userState } from "../store/userState";
 
 const HomePage = () => {
+  const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
   return (
     <div className="mx-7 h-screen flex flex-col justify-center items-center gap-16">
@@ -26,7 +29,8 @@ const HomePage = () => {
         <button
           className="btn btn-primary px-12"
           onClick={() => {
-            navigate("/bookshelf");
+            if (currentUser) navigate("/bookshelf");
+            else navigate("/login");
           }}
         >
           책장 보러가기 &rarr;

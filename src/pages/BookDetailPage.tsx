@@ -6,6 +6,7 @@ import { db } from "../service/firebase";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
 import { booksState } from "../store/booksState";
+import { FaCheck } from "react-icons/fa";
 
 const BookDetailPage = () => {
   const { isbn } = useParams();
@@ -102,7 +103,7 @@ const BookDetailPage = () => {
                   )
                 }
               >
-                {added ? "✔️" : "책장에 추가하기"}
+                {added ? <FaCheck /> : "책장에 추가하기"}
               </button>
             </div>
           </section>
