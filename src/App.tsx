@@ -11,13 +11,14 @@ import { useEffect } from "react";
 import { auth, db } from "./service/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { booksState } from "./store/booksState";
-import { onAuthStateChanged } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
+import { themeState } from "./store/themeState";
 
 function App() {
   const [login, setLogin] = useRecoilState(loginState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [bookList, setBookList] = useRecoilState(booksState);
-  // const [allTags, setAllTags] = useRecoilState(tagsState);
+  const [theme, setTheme] = useRecoilState(themeState);
 
   const queryClient = new QueryClient();
 
@@ -52,12 +53,26 @@ function App() {
     getBookList();
   }, []);
 
+  useEffect(() => {
+    if (
+      window.matchMedia("(prefers-color-scheme: dark)").matches ||
+      localStorage.getItem("theme") == "dracula"
+    ) {
+      document.documentElement.setAttribute("data-theme", "dracula");
+      setTheme("dracula");
+    } else {
+      document.documentElement.setAttribute("data-theme", "emerald");
+      localStorage.setItem("theme", "emerald");
+      setTheme("emerald");
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <RoutesPage />
       </Router>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }
