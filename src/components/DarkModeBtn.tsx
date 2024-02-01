@@ -3,11 +3,13 @@ import { IoMdMoon } from "react-icons/io";
 import { useRecoilState } from "recoil";
 import { themeState } from "../store/themeState";
 import { useEffect } from "react";
+
 export default function DarkModeBtn() {
   const [theme, setTheme] = useRecoilState(themeState);
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
+
   return (
     <button
       className="bottom-16 right-5 fixed text-2xl rounded-full p-1 hidden sm:block bg-base-100"

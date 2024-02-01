@@ -10,7 +10,7 @@ import { db } from "../service/firebase";
 import { booksState } from "../store/booksState";
 import SkeletonSearchResult from "../components/SkeletonSearchResult";
 
-const BookSearchResultPage: React.FC = (): JSX.Element => {
+const BookSearchResultPage = () => {
   const { keyword } = useParams();
   const { isLoading, hasNextPage, fetchNextPage, data } = useBooks(keyword);
   const currentUser = useRecoilValue(userState);

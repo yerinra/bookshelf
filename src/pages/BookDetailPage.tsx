@@ -3,15 +3,16 @@ import useBook from "../hooks/useBook";
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import { booksState } from "../store/booksState";
 import { FaCheck } from "react-icons/fa";
+import SkeletonBookDetail from "../components/SkeletonBookDetail";
 
 const BookDetailPage = () => {
   const { isbn } = useParams();
   const currentUser = useRecoilValue(userState);
-  const [bookList, setBookList] = useRecoilState(booksState);
+  const setBookList = useSetRecoilState(booksState);
   const { isLoading, isError, data } = useBook(isbn);
   const [added, setAdded] = useState(false);
 
@@ -48,23 +49,16 @@ const BookDetailPage = () => {
     if (currentUser && data) getAllBooks();
   }, [currentUser, data]);
 
-  useEffect(() => {
-    console.log(added);
-    // console.log(selectedData);
-  }, []);
   const handleAdd = async (isbn13, title, author, cover) => {
     try {
       await setDoc(doc(db, "users", currentUser, "books", isbn), {
-        // books: arrayUnion({
         title: selectedData[0].title,
         author: selectedData[0].author,
         cover: selectedData[0].cover,
         isbn13: isbn,
         hashtags: [],
         itemPage: selectedData[0].itemPage,
-        // }),
       });
-      console.log(bookList);
     } catch (err) {
       console.error(err);
     }
@@ -73,7 +67,7 @@ const BookDetailPage = () => {
 
   return (
     <div className="mt-16 mx-20">
-      {isLoading && <div className="skeleton w-[200px] h-[300px]" />}
+      {isLoading && <SkeletonBookDetail />}
       {selectedData &&
         selectedData.map((data) => (
           <section

@@ -4,7 +4,6 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  GoogleAuthProvider,
 } from "firebase/auth";
 
 export const signUpWithEmailAndPassword = async (
@@ -70,7 +69,6 @@ export const logInWithEmailAndPassword = async (
 };
 
 export const signInWithGoogle = async () => {
-  // const provider = new GoogleAuthProvider();
   googleProvider.setCustomParameters({ prompt: "select_account" });
   try {
     const res = await signInWithPopup(auth, googleProvider);
@@ -82,5 +80,4 @@ export const signInWithGoogle = async () => {
 
 export const logout = async () => {
   await signOut(auth);
-  console.log("signed out successfully");
 };

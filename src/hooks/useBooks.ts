@@ -1,11 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchBooksData } from "../api/aladin";
 
-import { AxiosError, AxiosResponse } from "axios";
-
 const useBooks = (keyword: string) => {
   const { fetchNextPage, hasNextPage, isLoading, isError, data } =
-    useInfiniteQuery<AxiosResponse, AxiosError>({
+    useInfiniteQuery({
       queryKey: ["books", keyword],
       queryFn: ({ pageParam }) => fetchBooksData(keyword, pageParam),
       initialPageParam: 1,

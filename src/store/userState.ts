@@ -5,7 +5,7 @@ export const loginState = atom<boolean>({
   default: false,
 });
 
-export const userState = atom<string | null | undefined>({
+export const userState = atom<string | null>({
   key: "userState",
   default: null,
 });

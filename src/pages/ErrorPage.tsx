@@ -1,10 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
 const ErrorPage = () => {
+  const navigate = useNavigate();
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p className="mt-10">Sorry, an unexpected error has occurred.</p>
-      <p></p>
-    </div>
+    <section className="flex flex-col items-center gap-10 mt-10">
+      <h1 className="text-accent text-5xl font-semibold">Oops! Wrong Path!</h1>
+
+      <button
+        className="btn max-w-32"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go to Home
+      </button>
+    </section>
   );
 };
 

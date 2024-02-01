@@ -1,26 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { booksState } from "../store/booksState";
 export interface BookResult {
   title: string;
   author: string;
-  publisher: string;
-  pubDate: string;
   isbn13: string;
   cover: string;
-  salesPoint: number;
 }
 
-const BookCard = ({ book, handleAdd }) => {
+interface BookCardProps {
+  book: BookResult;
+  handleAdd;
+}
+
+const BookCard = ({ book, handleAdd }: BookCardProps) => {
   const navigate = useNavigate();
-  const [bookList, setBookList] = useRecoilState(booksState);
+  const bookList = useRecoilValue(booksState);
 
   const handleClick = () => {
     navigate(`/book/${isbn13}`);
   };
-  const { title, author, publisher, pubDate, cover, isbn13, salesPoint } = book;
+
+  const { title, author, cover, isbn13 } = book;
 
   return (
     <div className="flex gap-4 items-start text-start mx-10 mb-5 border border-1 border-slate-700 px-7 py-5 rounded-lg">

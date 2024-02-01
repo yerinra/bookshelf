@@ -1,45 +1,47 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpWithEmailAndPassword } from "../service/auth";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loginState, userState } from "../store/userState";
 import { db } from "../service/firebase";
-import { doc, setDoc, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const SignUpPage = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [login, setLogin] = useRecoilState(loginState);
-  const [user, setUser] = useRecoilState(userState);
+  const login = useRecoilValue(loginState);
+  const user = useRecoilValue(userState);
   const navigate = useNavigate();
 
   // 이미 로그인한 사람이 회원가입 페이지 접근시 홈페이지로 리다이렉트.
   useEffect(() => {
-    // if (login || !user) navigate("/");
-    console.log(login);
-    console.log(user);
-  }, []);
+    if (login || !user) navigate("/");
+  }, [login, user, navigate]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === "email") setEmail(e.target.value);
     else if (e.target.name === "password") setPassword(e.target.value);
   };
 
-  const handleClick = (e) => {
-    if (e.target.name === "email") setEmail("");
-    else if (e.target.name === "password") setPassword("");
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    const { name } = e.target as HTMLInputElement;
+    if (name === "email") setEmail("");
+    else if (name === "password") setPassword("");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+
       const data = await signUpWithEmailAndPassword(email, password);
-      await setDoc(doc(db, "users", data.uid), {
-        userName: data?.displayName || data?.uid,
-        uid: data?.uid,
-      });
-      console.log("data", data.uid);
+
+      if (data) {
+        await setDoc(doc(db, "users", data.uid), {
+          userName: data?.displayName || data?.uid,
+          uid: data?.uid,
+        });
+      }
     } catch (e) {
       console.error(e);
     }
@@ -70,11 +72,7 @@ const SignUpPage = () => {
             onClick={handleClick}
             className="input input-bordered w-full"
           />
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="btn btn-primary"
-          >
+          <button type="submit" className="btn btn-primary">
             회원 가입하기
           </button>
           <button

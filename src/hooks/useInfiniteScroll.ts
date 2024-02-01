@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 import { InfiniteQueryObserverResult } from "@tanstack/react-query";
 
 interface ioProps {
@@ -14,7 +14,7 @@ const useInfiniteScroll = ({
 }: ioProps) => {
   const io = useRef(null);
   const scrollRef = useCallback(
-    (target) => {
+    (target: HTMLElement) => {
       if (isLoading) return;
 
       if (io.current) io.current.disconnect();

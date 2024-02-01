@@ -10,7 +10,7 @@ import BookShelfPage from "./pages/BookShelfPage";
 import HomePage from "./pages/HomePage";
 import BookSearchResultPage from "./pages/BookSearchResultPage";
 
-const RoutesPage: React.FC = () => {
+const RoutesPage = () => {
   return (
     <Routes>
       <Route path="/login" element={<LogInPage />} />
