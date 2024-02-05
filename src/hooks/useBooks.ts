@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchBooksData } from "../api/aladin";
 
-const useBooks = (keyword: string) => {
+const useBooks = (keyword: string = "") => {
   const { fetchNextPage, hasNextPage, isLoading, isError, data } =
     useInfiniteQuery({
       queryKey: ["books", keyword],
@@ -12,10 +12,11 @@ const useBooks = (keyword: string) => {
         return lastPage?.data.length === 0 ? undefined : nextPage;
       },
       select: (data) => ({
-        pages: data?.pages.flatMap((page) => page.data),
+        pages: data?.pages.flatMap((page) => page?.data),
         pageParams: data.pageParams,
       }),
     });
+
   return {
     fetchNextPage,
     hasNextPage,
