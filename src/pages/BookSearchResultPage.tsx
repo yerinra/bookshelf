@@ -39,21 +39,15 @@ const BookSearchResultPage = () => {
     if (currentUser) getAllBooks();
   }, [currentUser, selectedBook]);
 
-  // useEffect(() => {
-  //   console.log(currentUser);
-  // }, []);
-
   const handleAdd = async (isbn13, title, author, cover) => {
     try {
       await setDoc(doc(db, "users", currentUser, "books", isbn13), {
-        // books: arrayUnion({
         title,
         author,
         cover,
         isbn13,
         hashtags: [],
         itemPage: 1000,
-        // }),
       });
     } catch (err) {
       console.error(err);
