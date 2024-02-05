@@ -14,7 +14,7 @@ if (savedTheme) {
   defaultTheme = isDarkMode ? "dark" : "light";
 }
 
-export const themeState = atom({
+export const themeState = atom<Theme>({
   key: "themeState",
   default: defaultTheme,
 });
