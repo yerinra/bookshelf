@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 
 const BasicLayout = () => {
   return (
-    <>
+    <div className="flex flex-col justify-between">
       <NavBar />
       <section>
         <Outlet />
@@ -16,7 +16,7 @@ const BasicLayout = () => {
       </section>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
