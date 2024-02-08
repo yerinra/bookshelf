@@ -2,22 +2,20 @@ import { useParams } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
 import BookCard from "../components/BookCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
-import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
-import { booksState } from "../store/booksState";
 import SkeletonSearchResult from "../components/SkeletonSearchResult";
+import { Book } from "../lib/types";
+import useUpdatedBooks from "../hooks/useUpdatedBooks";
 
-const BookSearchResultPage = () => {
+export default function BookSearchResultPage() {
   const { keyword } = useParams();
   const { isLoading, hasNextPage, fetchNextPage, data } = useBooks(keyword);
   const currentUser = useRecoilValue(userState);
-  const [bookList, setBookList] = useRecoilState(booksState);
-  const [selectedBook, setSelectedBook] = useState(null);
-  // const [bookList, setBookList] = useState([]);
-  const finalData = data?.pages.map((v) => v.item)[0];
+
+  const finalData: Book[] = data?.pages.map((v) => v.item)[0];
 
   const scrollRef = useInfiniteScroll({
     isLoading,
@@ -25,34 +23,29 @@ const BookSearchResultPage = () => {
     fetchNextPage,
   });
 
-  useEffect(() => {
-    const getAllBooks = async () => {
-      try {
-        onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
-          const mapped = doc?.docs?.map((doc) => doc?.data());
-          setBookList(mapped);
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    if (currentUser) getAllBooks();
-  }, [currentUser, selectedBook]);
+  useUpdatedBooks();
 
-  const handleAdd = async (isbn13, title, author, cover) => {
+  const handleAdd = async (
+    isbn13: string,
+    title: string,
+    author: string,
+    cover: string
+  ) => {
     try {
-      await setDoc(doc(db, "users", currentUser, "books", isbn13), {
-        title,
-        author,
-        cover,
-        isbn13,
-        hashtags: [],
-        itemPage: 1000,
-      });
+      if (currentUser) {
+        await setDoc(doc(db, "users", currentUser, "books", isbn13), {
+          title,
+          author,
+          cover,
+          isbn13,
+          hashtags: [],
+          itemPage: 1000,
+          createdAt: serverTimestamp(),
+        });
+      }
     } catch (err) {
       console.error(err);
     }
-    setSelectedBook(bookList?.filter((v) => v.isbn13 == isbn13)[0]);
   };
 
   return (
@@ -61,15 +54,12 @@ const BookSearchResultPage = () => {
         {isLoading && <SkeletonSearchResult />}
         {data &&
           finalData?.length > 0 &&
-          data?.pages.map((v) =>
-            v.item.map((val, i) => (
-              <BookCard book={val} key={i} handleAdd={handleAdd} />
-            ))
-          )}
-        {finalData?.length == 0 && <div>no data</div>}
+          finalData.map((book) => (
+            <BookCard book={book} key={book.isbn13} handleAdd={handleAdd} />
+          ))}
+        {finalData?.length == 0 && <div>검색 결과가 없습니다.</div>}
       </main>
       <div ref={scrollRef} />
     </>
   );
-};
-export default BookSearchResultPage;
+}

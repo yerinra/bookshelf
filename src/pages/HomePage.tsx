@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
 
-const HomePage = () => {
+export default function HomePage() {
   const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
   return (
@@ -35,6 +35,4 @@ const HomePage = () => {
       </section>
     </div>
   );
-};
-
-export default HomePage;
+}

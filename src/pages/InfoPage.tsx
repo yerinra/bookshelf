@@ -1,6 +1,6 @@
 const InfoPage = () => {
   return (
-    <section className="flex flex-col gap-10 m-32 items-center">
+    <section className="flex flex-col gap-10 m-32 mb-0 items-center">
       <h1 className="font-extrabold text-3xl">무엇을 할 수 있나요?</h1>
       <ul className="flex flex-col gap-2 items-start">
         <li>1. 책 제목을 검색하여 책을 찾을 수 있습니다.</li>
