@@ -8,7 +8,7 @@ export default function DarkModeBtn() {
 
   return (
     <button
-      className="bottom-16 right-5 fixed text-2xl rounded-full p-1 hidden sm:block bg-base-100"
+      className="bottom-16 right-5 fixed text-2xl rounded-full p-1 hidden sm:block"
       onClick={setTheme}
     >
       {theme == "light" && <IoMdMoon />}

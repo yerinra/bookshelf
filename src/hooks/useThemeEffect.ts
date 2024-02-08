@@ -7,8 +7,8 @@ export default function useThemeEffect() {
 
   useEffect(() => {
     if (theme) {
-      document.body.dataset.theme = theme;
+      // document.body.dataset.theme = theme;
+      document.body.className = theme;
     }
-    console.log("현재 theme", theme);
   }, [theme]);
 }

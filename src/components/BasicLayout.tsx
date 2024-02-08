@@ -4,13 +4,13 @@ import Footer from "./layout/Footer";
 import NavBar from "./layout/Navbar";
 import { Outlet } from "react-router-dom";
 
-const BasicLayout = () => {
+export default function BasicLayout() {
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col">
       <NavBar />
+
       <section>
         <Outlet />
-
         <DarkModeBtn />
         <ScrollTopBtn />
       </section>
@@ -18,6 +18,4 @@ const BasicLayout = () => {
       <Footer />
     </div>
   );
-};
-
-export default BasicLayout;
+}

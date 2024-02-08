@@ -8,7 +8,6 @@ export default defineConfig({
   server: {
     proxy: {
       "/keyword": {
-        // target: "https://openapi.naver.com/v1/search/book.json",
         target: "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/keyword/, ""),
@@ -16,7 +15,6 @@ export default defineConfig({
         ws: true,
       },
       "/isbn": {
-        // target: "https://openapi.naver.com/v1/search/book.json",
         target: "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/isbn/, ""),

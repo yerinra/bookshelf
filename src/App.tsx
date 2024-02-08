@@ -11,22 +11,6 @@ function App() {
   useThemeEffect();
   useUser();
 
-  // useEffect(() => {
-  //   const getBookList = async () => {
-  //     if (currentUser) {
-  //       try {
-  //         onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
-  //           const mapped = doc?.docs?.map((doc) => doc?.data());
-  //           setBookList(mapped);
-  //         });
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
-  //     }
-  //   };
-  //   getBookList();
-  // }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
