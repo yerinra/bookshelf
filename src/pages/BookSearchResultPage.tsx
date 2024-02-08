@@ -54,9 +54,11 @@ export default function BookSearchResultPage() {
         {isLoading && <SkeletonSearchResult />}
         {data &&
           finalData?.length > 0 &&
-          finalData.map((book) => (
-            <BookCard book={book} key={book.isbn13} handleAdd={handleAdd} />
-          ))}
+          data?.pages.map((page) =>
+            page.item.map((book: Book) => (
+              <BookCard book={book} key={book.isbn13} handleAdd={handleAdd} />
+            ))
+          )}
         {finalData?.length == 0 && <div>검색 결과가 없습니다.</div>}
       </main>
       <div ref={scrollRef} />

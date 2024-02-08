@@ -1,9 +1,7 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import {
   collection,
-  getDoc,
-  limit,
   onSnapshot,
   orderBy,
   query,
@@ -12,16 +10,15 @@ import {
 import { Book } from "../lib/types";
 import { booksState, categorizedBookState } from "../store/booksState";
 import { hashtagsState, selectedTagState } from "../store/hashtagsState";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { db } from "../service/firebase";
 
 export default function useBookShelfBooks() {
   const currentUser = useRecoilValue(userState);
-  const [bookList, setBookList] = useRecoilState(booksState);
-  const [allTags, setAllTags] = useRecoilState(hashtagsState);
-  const [selectedTag, setSelectedTag] = useRecoilState(selectedTagState);
-  const [categorizedBooks, setCategorizedBooks] =
-    useRecoilState(categorizedBookState);
+  const setBookList = useSetRecoilState(booksState);
+  const setAllTags = useSetRecoilState(hashtagsState);
+  const selectedTag = useRecoilValue(selectedTagState);
+  const setCategorizedBooks = useSetRecoilState(categorizedBookState);
 
   useEffect(() => {
     const getAllBooks = async () => {
@@ -41,18 +38,11 @@ export default function useBookShelfBooks() {
             setAllTags(hashtags);
           });
         }
-
-        // collection(db, "users", currentUser, "books")
-        // const q = query(
-        //   collectionRef,
-
-        //   orderBy("createdAt", "asc")
-        // );
-        // console.log(bookList);
       } catch (e) {
         console.error(e);
       }
     };
+
     const getTaggedBooks = async () => {
       try {
         if (currentUser && selectedTag) {
@@ -80,8 +70,8 @@ export default function useBookShelfBooks() {
         console.error(e);
       }
     };
+
     getAllBooks();
     getTaggedBooks();
-    // console.log(bookList);
-  }, [selectedTag, currentUser]);
+  }, [selectedTag, currentUser, setBookList, setAllTags, setCategorizedBooks]);
 }
