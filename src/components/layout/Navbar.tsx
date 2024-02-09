@@ -1,6 +1,6 @@
 import { auth } from "../../service/firebase";
 import { signOut } from "firebase/auth";
-import { BsBookshelf } from "react-icons/bs";
+import { FrameIcon } from "@radix-ui/react-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState, userState } from "../../store/userState";
@@ -26,7 +26,7 @@ export default function NavBar() {
     <nav className="flex justify-between mx-20 py-3">
       <Link to="/" className="flex items-center justify-center gap-3">
         <button className="p-2 text-2xl font-extrabold bg-[#ffbb55] rounded-full">
-          <BsBookshelf />
+          <FrameIcon width="20" height="20" />
         </button>
         <h1 className="text-xl font-extrabold cursor-pointer">BOOK:SHELF</h1>
       </Link>

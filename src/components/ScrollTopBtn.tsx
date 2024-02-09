@@ -1,4 +1,4 @@
-import { MdKeyboardArrowUp } from "react-icons/md";
+import { ChevronUpIcon } from "@radix-ui/react-icons";
 
 export default function ScrollTopBtn() {
   return (
@@ -11,7 +11,7 @@ export default function ScrollTopBtn() {
         });
       }}
     >
-      <MdKeyboardArrowUp />
+      <ChevronUpIcon width="20" height="20" />
     </button>
   );
 }

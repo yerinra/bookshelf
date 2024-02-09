@@ -1,60 +1,68 @@
 import { useNavigate } from "react-router-dom";
-import { FaCheck } from "react-icons/fa";
+import { BookmarkFilledIcon, BookmarkIcon } from "@radix-ui/react-icons";
 
 import { useRecoilValue } from "recoil";
 import { booksState } from "../store/booksState";
-export interface BookResult {
-  title: string;
-  author: string;
-  isbn13: string;
-  cover: string;
-}
+import { Book } from "../lib/types";
 
-interface BookCardProps {
-  book: BookResult;
-  handleAdd;
-}
+type BookCardProps = {
+  book: Book;
+  handleAdd: (
+    isbn13: string,
+    title: string,
+    author: string,
+    cover: string
+  ) => Promise<void>;
+  handleDelete: (isbn13: string) => Promise<void>;
+};
 
-const BookCard = ({ book, handleAdd }: BookCardProps) => {
+export default function BookCard({
+  book,
+  handleAdd,
+  handleDelete,
+}: BookCardProps) {
   const navigate = useNavigate();
   const bookList = useRecoilValue(booksState);
 
-  const handleClick = () => {
+  const handleBookClick = () => {
     navigate(`/book/${isbn13}`);
+  };
+
+  const handleBookMarkClick = async () => {
+    if (bookList?.map((v) => v.isbn13).includes(isbn13)) {
+      handleDelete(isbn13);
+    } else {
+      handleAdd(isbn13, title, author, cover);
+    }
   };
 
   const { title, author, cover, isbn13 } = book;
 
   return (
-    <div className="flex gap-4 items-start text-start mx-10 mb-5 border border-1 border-slate-700 px-7 py-5 rounded-lg">
+    <div className="flex gap-4 items-start text-start mx-10 mb-5 border border-1 border-slate-700 px-7 py-5 rounded-lg relative">
       <img
-        onClick={handleClick}
+        onClick={handleBookClick}
         src={cover}
         className="rounded-lg cursor-pointer"
       />
       <div className="flex flex-col gap-2">
         <div
           className="font-semibold text-md cursor-pointer"
-          onClick={handleClick}
+          onClick={handleBookClick}
         >
           {title}
         </div>
         <div className="text-gray-400 text-xs">
           {author.length > 30 ? author.slice(0, 30) + " ..." : author}
         </div>
-        <button
-          className="btn btn-outline btn-xs max-w-32 mt-1"
-          disabled={bookList?.map((v) => v.title).includes(title)}
-          onClick={() => handleAdd(isbn13, title, author, cover)}
-        >
-          {bookList && bookList?.map((v) => v.title).includes(title) ? (
-            <FaCheck />
+        <button className="mt-3" onClick={handleBookMarkClick}>
+          {bookList && bookList?.map((v) => v.isbn13).includes(isbn13) ? (
+            <BookmarkFilledIcon width="20" height="20" />
           ) : (
-            "책장에 추가하기"
+            <BookmarkIcon width="20" height="20" />
           )}
         </button>
       </div>
     </div>
   );
-};
-export default BookCard;
+}

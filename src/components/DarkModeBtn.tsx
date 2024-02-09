@@ -1,5 +1,5 @@
-import { MdSunny } from "react-icons/md";
-import { IoMdMoon } from "react-icons/io";
+import { SunIcon } from "@radix-ui/react-icons";
+import { MoonIcon } from "@radix-ui/react-icons";
 
 import useThemeMode from "../hooks/useThemeMode";
 
@@ -8,11 +8,11 @@ export default function DarkModeBtn() {
 
   return (
     <button
-      className="bottom-16 right-5 fixed text-2xl rounded-full p-1 hidden sm:block"
+      className="bottom-16 right-5 fixed rounded-full p-1 hidden sm:block"
       onClick={setTheme}
     >
-      {theme == "light" && <IoMdMoon />}
-      {theme == "dark" && <MdSunny />}
+      {theme == "light" && <MoonIcon width="20" height="20" />}
+      {theme == "dark" && <SunIcon width="20" height="20" />}
     </button>
   );
 }
