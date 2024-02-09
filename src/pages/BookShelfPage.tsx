@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { userState } from "../store/userState";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { booksState, categorizedBookState } from "../store/booksState";
+import Select from "react-select";
 
 import { db } from "../service/firebase";
 import {
-  collection,
   deleteDoc,
-  onSnapshot,
   doc,
   updateDoc,
   arrayUnion,
@@ -19,7 +18,7 @@ import {
 } from "firebase/firestore";
 import MyBook from "../components/MyBook";
 import { hashtagsState, selectedTagState } from "../store/hashtagsState";
-import { Book } from "../lib/types";
+import { Book, SortOptions } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import Tags from "../components/Tags";
 
@@ -31,10 +30,20 @@ const BookShelfPage = () => {
   const [selectedTag, setSelectedTag] = useRecoilState(selectedTagState);
   const [categorizedBooks, setCategorizedBooks] =
     useRecoilState(categorizedBookState);
-
-  const sortedBooks = [...categorizedBooks].sort(
-    (x, y) => y.createdAt.seconds - x.createdAt.seconds
+  const [sortBy, setSortBy] = useState<SortOptions>("createdAt");
+  const [sortedBooks, setSortedBooks] = useState(
+    [...(categorizedBooks || [])].sort(
+      (x, y) => y.createdAt.seconds - x.createdAt.seconds
+    )
   );
+
+  const options = [
+    { value: "createdAt", label: "추가 순" },
+    { value: "title", label: "제목 순" },
+    { value: "author", label: "작가 순" },
+    { value: "rating", label: "별점 순" },
+  ];
+
   useBookShelfBooks();
 
   useEffect(() => {
@@ -43,6 +52,22 @@ const BookShelfPage = () => {
     }
   }, [categorizedBooks, setSelectedTag]);
 
+  useEffect(() => {
+    console.log(sortedBooks, sortBy);
+    const newBooks = [...(categorizedBooks || [])].sort((x, y) => {
+      if (sortBy === "createdAt") {
+        return x.createdAt.seconds - y.createdAt.seconds;
+      }
+      if (sortBy === "author") {
+        return x.author > y.author ? 1 : x.author < y.author ? -1 : 0;
+      }
+      if (sortBy === "title") {
+        return x.title > y.title ? 1 : x.title < y.title ? -1 : 0;
+      }
+      return 0;
+    });
+    setSortedBooks(newBooks);
+  }, [categorizedBooks, sortBy]);
   const handleTagRemove = async (tagName: string, isbn13: string) => {
     try {
       if (currentUser) {
@@ -101,10 +126,13 @@ const BookShelfPage = () => {
   return (
     <section className="flex flex-col items-center">
       <h1 className="mt-14 font-bold pl-10">{currentUser}의 책장</h1>
-      <button>작가</button>
-      <button>제목</button>
-      <button>추가된 순</button>
-      <button>별점 순</button>
+      <Select
+        options={options}
+        onChange={(option) => {
+          setSortBy(option.value);
+          console.log(option.value);
+        }}
+      />
       <div className="flex flex-row">
         <main className="max-w-4/5 flex flex-col gap-3 shrink-0">
           {bookList.length == 0 && <>책이 없습니다.</>}

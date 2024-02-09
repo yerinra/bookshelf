@@ -4,7 +4,7 @@ import BookCard from "../components/BookCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import SkeletonSearchResult from "../components/SkeletonSearchResult";
 import { Book } from "../lib/types";
@@ -48,6 +48,16 @@ export default function BookSearchResultPage() {
     }
   };
 
+  const handleDelete = async (isbn13: string) => {
+    try {
+      if (currentUser) {
+        await deleteDoc(doc(db, "users", currentUser, "books", isbn13));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <main className="flex-col p-10">
@@ -56,7 +66,12 @@ export default function BookSearchResultPage() {
           finalData?.length > 0 &&
           data?.pages.map((page) =>
             page.item.map((book: Book) => (
-              <BookCard book={book} key={book.isbn13} handleAdd={handleAdd} />
+              <BookCard
+                book={book}
+                key={`${book.isbn13}`}
+                handleAdd={handleAdd}
+                handleDelete={handleDelete}
+              />
             ))
           )}
         {finalData?.length == 0 && <div>검색 결과가 없습니다.</div>}

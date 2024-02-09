@@ -1,20 +1,27 @@
 import { useParams } from "react-router-dom";
 import useBook from "../hooks/useBook";
 import { useEffect, useState } from "react";
-import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../service/firebase";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import { booksState } from "../store/booksState";
-import { FaCheck } from "react-icons/fa";
+import { BookmarkFilledIcon, BookmarkIcon } from "@radix-ui/react-icons";
 import SkeletonBookDetail from "../components/SkeletonBookDetail";
+import { Book, BookInfo } from "../lib/types";
 
 const BookDetailPage = () => {
   const { isbn } = useParams();
   const currentUser = useRecoilValue(userState);
-  const setBookList = useSetRecoilState(booksState);
-  const { isLoading, isError, data } = useBook(isbn);
-  const [added, setAdded] = useState(false);
+  const [bookList, setBookList] = useRecoilState(booksState);
+  const { isLoading, data } = useBook(isbn);
 
   const selectedData = data?.map((v) => {
     return {
@@ -31,45 +38,77 @@ const BookDetailPage = () => {
   useEffect(() => {
     const getAllBooks = async () => {
       try {
-        onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
-          const mapped = doc?.docs?.map((doc) => doc?.data());
-          setBookList(mapped);
-          // console.log(mapped.map((v) => v.isbn13));
-          // console.log(selectedData?.isbn13);
-          if (mapped.filter((v) => v?.isbn13 === isbn).length !== 0) {
-            setAdded(true);
-          } else {
-            setAdded(false);
-          }
-        });
+        if (currentUser) {
+          onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
+            const mapped = doc?.docs?.map((doc) => doc?.data());
+            setBookList(mapped as Book[]);
+            if (mapped.filter((v) => v?.isbn13 === isbn).length !== 0) {
+              // setAdded(true);
+            } else {
+              // setAdded(false);
+            }
+          });
+        }
       } catch (e) {
         console.error(e);
       }
     };
     if (currentUser && data) getAllBooks();
-  }, [currentUser, data]);
+  }, [currentUser, data, isbn, setBookList]);
 
-  const handleAdd = async (isbn13, title, author, cover) => {
+  const handleAdd = async (
+    isbn13: string,
+    title: string,
+    author: string,
+    cover: string
+  ) => {
     try {
-      await setDoc(doc(db, "users", currentUser, "books", isbn), {
-        title: selectedData[0].title,
-        author: selectedData[0].author,
-        cover: selectedData[0].cover,
-        isbn13: isbn,
-        hashtags: [],
-        itemPage: selectedData[0].itemPage,
-      });
+      if (currentUser && isbn) {
+        await setDoc(doc(db, "users", currentUser, "books", isbn), {
+          title: selectedData[0].title,
+          author: selectedData[0].author,
+          cover: selectedData[0].cover,
+          isbn13: isbn,
+          hashtags: [],
+          itemPage: selectedData[0].itemPage,
+          createdAt: serverTimestamp(),
+        });
+      }
     } catch (err) {
       console.error(err);
     }
-    setAdded(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (currentUser && isbn) {
+        await deleteDoc(doc(db, "users", currentUser, "books", isbn));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleClick = () => {
+    if (isbn) {
+      if (bookList?.map((v) => v.isbn13).includes(isbn)) {
+        handleDelete();
+      } else {
+        handleAdd(
+          isbn,
+          selectedData.title,
+          selectedData.author,
+          selectedData.author
+        );
+      }
+    }
   };
 
   return (
     <div className="mt-16 mx-20">
       {isLoading && <SkeletonBookDetail />}
       {selectedData &&
-        selectedData.map((data) => (
+        selectedData.map((data: BookInfo) => (
           <section
             key={data.isbn13}
             className="flex flex-col md:flex-row gap-8"
@@ -83,21 +122,13 @@ const BookDetailPage = () => {
               <div className="font-extrabold text-2xl">{data.title}</div>
               <div className="text-neutral-400">{data.author}</div>
               <div>{data.description}</div>
-              <div>{data.publisher}</div>
               <div>총 {data.itemPage}쪽</div>
-              <button
-                className="btn btn-outline"
-                disabled={added}
-                onClick={() =>
-                  handleAdd(
-                    isbn,
-                    selectedData.title,
-                    selectedData.author,
-                    selectedData.cover
-                  )
-                }
-              >
-                {added ? <FaCheck /> : "책장에 추가하기"}
+              <button className="mt-3" onClick={handleClick}>
+                {isbn && bookList?.map((v) => v.isbn13).includes(isbn) ? (
+                  <BookmarkFilledIcon />
+                ) : (
+                  <BookmarkIcon />
+                )}
               </button>
             </div>
           </section>
