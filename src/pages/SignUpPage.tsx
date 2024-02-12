@@ -5,10 +5,19 @@ import { useRecoilValue } from "recoil";
 import { loginState, userState } from "../store/userState";
 import { db } from "../service/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useForm, FieldValues } from "react-hook-form";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    getValues,
+  } = useForm();
 
   const login = useRecoilValue(loginState);
   const user = useRecoilValue(userState);
@@ -30,60 +39,86 @@ export default function SignUpPage() {
     else if (name === "password") setPassword("");
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (data: FieldValues) => {
     try {
-      e.preventDefault();
+      const userData = await signUpWithEmailAndPassword(
+        data.email,
+        data.password
+      );
 
-      const data = await signUpWithEmailAndPassword(email, password);
-
-      if (data) {
-        await setDoc(doc(db, "users", data.uid), {
-          userName: data?.displayName || data?.uid,
-          uid: data?.uid,
+      if (userData) {
+        await setDoc(doc(db, "users", userData.uid), {
+          userName: userData?.displayName || userData?.uid,
+          uid: userData?.uid,
         });
       }
     } catch (e) {
       console.error(e);
+    } finally {
+      reset();
     }
   };
 
   return (
-    <>
-      <h1>회원가입</h1>
-      <section className="flex flex-col mx-auto max-w-xs my-20 gap-2 ">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={email}
-            required
-            onChange={handleInputChange}
-            onClick={handleClick}
-            className="input input-bordered w-full"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            required
-            onChange={handleInputChange}
-            onClick={handleClick}
-            className="input input-bordered w-full"
-          />
-          <button type="submit" className="btn btn-primary">
-            회원 가입하기
-          </button>
-          <button
-            type="submit"
-            onClick={() => navigate("/login")}
-            className="btn w-[320px]"
-          >
-            로그인 하러가기
-          </button>
-        </form>
-      </section>
-    </>
+    <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
+      <h1 className="py-10 font-extrabold text-4xl w-[320px] mt-20">Sign Up</h1>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+        {errors.email && (
+          <p className="text-red-500">{`${errors.email.message}`}</p>
+        )}
+        {errors.password && (
+          <p className="text-red-500">{`${errors.password.message}`}</p>
+        )}
+        {errors.confirmPassword && (
+          <p className="text-red-500">{`${errors.confirmPassword.message}`}</p>
+        )}
+        <input
+          {...register("email", { required: "Email is required" })}
+          type="email"
+          placeholder="Email"
+          onClick={handleClick}
+          className="input w-[320px] pl-3 py-2 rounded-md"
+        />
+        <input
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 10,
+              message: "Password must be at least 10 characters",
+            },
+          })}
+          type="password"
+          placeholder="Password"
+          onClick={handleClick}
+          className="input w-[320px] pl-3 py-2 rounded-md"
+        />
+        <input
+          {...register("confirmPassword", {
+            required: "Please confirm the password",
+            validate: (value) =>
+              value === getValues("password") || "Passwords must match.",
+          })}
+          type="password"
+          placeholder="Confirm Password"
+          onClick={handleClick}
+          className="input w-[320px] pl-3 py-2 rounded-md"
+        />
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="btn w-[320px] btn-reverse"
+        >
+          회원 가입하기
+        </button>
+        <button
+          type="submit"
+          onClick={() => navigate("/login")}
+          className="btn w-[320px] btn-accent"
+        >
+          로그인 하러가기
+        </button>
+      </form>
+    </section>
   );
 }
