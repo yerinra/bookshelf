@@ -3,12 +3,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import RoutesPage from "./RoutesPage";
-import useThemeEffect from "./hooks/useThemeEffect";
+// import useThemeEffect from "./hooks/useThemeEffect";
+import useThemeMode from "./hooks/useThemeMode";
 import useUser from "./hooks/useUser";
 
 function App() {
   const queryClient = new QueryClient();
-  useThemeEffect();
+  useThemeMode();
   useUser();
 
   return (
