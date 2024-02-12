@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { toast } from "sonner";
 
 export const signUpWithEmailAndPassword = async (
   email: string,
@@ -13,6 +14,7 @@ export const signUpWithEmailAndPassword = async (
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
+    toast.success(`${res.user?.displayName || res.user?.uid}님 환영합니다.`);
     return res.user;
   } catch (err: unknown) {
     let message;
@@ -40,7 +42,7 @@ export const signUpWithEmailAndPassword = async (
         default:
           message = "로그인에 실패 하였습니다.";
       }
-      alert(message);
+      toast.error(message);
     }
   }
 };
@@ -51,13 +53,14 @@ export const logInWithEmailAndPassword = async (
 ) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
+    toast.success(`${res.user?.displayName || res.user?.uid}님 반갑습니다.`);
     return res;
   } catch (err: unknown) {
     let message;
     if (err instanceof FirebaseError) {
       switch (err.code) {
         case "auth/invalid-credential":
-          message = "입력된 정보가 틀렸습니다.";
+          message = "입력된 정보가 올바르지 않습니다.";
           break;
         case "auth/invalid-password":
           message = "비밀번호가 틀렸습니다.";
@@ -65,7 +68,7 @@ export const logInWithEmailAndPassword = async (
         default:
           message = "로그인에 실패 하였습니다.";
       }
-      alert(message);
+      toast.error(message);
     }
   }
 };
@@ -74,6 +77,7 @@ export const signInWithGoogle = async () => {
   googleProvider.setCustomParameters({ prompt: "select_account" });
   try {
     const res = await signInWithPopup(auth, googleProvider);
+    toast.success(`${res?.user?.displayName || res?.user?.uid}님 반갑습니다.`);
     return res;
   } catch (err) {
     console.error(err);
@@ -81,5 +85,9 @@ export const signInWithGoogle = async () => {
 };
 
 export const logout = async () => {
-  await signOut(auth);
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.log(err);
+  }
 };

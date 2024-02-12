@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginState, userState } from "../../store/userState";
 import SearchInput from "../SearchInput";
+import { toast } from "sonner";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function NavBar() {
       setLogin(false);
       setUser(null);
       navigate("/");
+      toast.success("성공적으로 로그아웃 되었습니다.");
     } catch (err) {
       console.error(err);
     }

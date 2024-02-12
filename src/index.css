@@ -30,15 +30,11 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    --text-primary: #9ea5b4;
-    --text-secondary: #a0a7b3;
-    --bg-primary: #1d232a;
-    --bg-secondary: #33383d;
-    --accent: #62b4b8;
+    @apply text-d-text-primary bg-d-bg-primary;
   }
 }
 
-body.light {
+body {
   @apply text-l-text-primary bg-l-bg-primary;
 }
 
@@ -46,36 +42,50 @@ body.dark {
   @apply text-d-text-primary bg-d-bg-primary;
 }
 
-.input {
-  @apply bg-l-bg-primary dark:bg-d-bg-primary border border-l-bg-primary dark:border-d-bg-primary focus:border focus:border-l-border focus:dark:border-d-border;
-}
+@layer components {
+  .input {
+    @apply bg-l-bg-primary dark:bg-d-bg-secondary border border-l-border dark:border-d-border hover:border-l-text-secondary focus:border-l-text-primary focus:dark:border-d-text-primary hover:dark:border-d-text-secondary;
+  }
 
-.input::placeholder {
-  color: var(--text-secondary);
-}
+  .input::placeholder {
+    @apply text-l-text-secondary;
+  }
 
-.input:focus {
-  outline: 1px solid var(--text-secondary);
-}
+  .input:focus {
+    @apply outline-l-text-secondary dark:outline-d-text-secondary;
+  }
 
-.btn {
-  @apply py-2 h-[48px] rounded-lg border border-l-border dark:border-d-border text-l-text-primary dark:text-d-text-primary hover:bg-l-border dark:hover:bg-d-bg-secondary;
-}
+  .btn {
+    @apply py-2 h-[48px] rounded-lg border border-l-border dark:border-d-border text-l-text-primary dark:text-d-text-primary hover:bg-l-bg-secondary dark:hover:bg-d-bg-secondary;
+  }
 
-.btn-google {
-  @apply bg-[#ff6a6b] text-d-text-primary hover:bg-[#fb7777];
-}
+  .btn-google {
+    @apply bg-[#ff6a6b] text-d-text-primary hover:bg-[#fb7777];
+  }
 
-.btn-home {
-  @apply rounded-[100px] w-[200px] first-of-type:border-l-text-secondary first-of-type:dark:border-d-text-secondary hover:bg-l-text-primary  hover:text-l-bg-primary hover:dark:bg-d-bg-secondary
+  .btn-home {
+    @apply rounded-[100px] w-[200px] first-of-type:border-l-text-secondary first-of-type:dark:border-d-text-secondary hover:bg-l-text-primary  hover:text-l-bg-primary hover:dark:bg-d-bg-secondary
   last-of-type:bg-accent 
   last-of-type:hover:bg-[#F3B251] last-of-type:hover:dark:bg-[#F3B251] last-of-type:dark:text-l-text-primary;
-}
+  }
 
-.btn-nav {
-  @apply w-[80px] h-[45px] border-none;
-}
+  .btn-nav {
+    @apply w-[80px] h-[45px] border-none;
+  }
 
-.skeleton {
-  @apply bg-l-border dark:bg-d-border rounded-lg;
+  .btn-accent {
+    @apply bg-accent hover:bg-[#F3B251];
+  }
+
+  .btn-reverse {
+    @apply bg-d-bg-primary text-d-text-primary dark:bg-l-bg-primary dark:text-l-text-primary hover:bg-d-bg-secondary hover:dark:bg-l-bg-secondary;
+  }
+
+  .skeleton {
+    @apply bg-l-border dark:bg-d-border rounded-lg;
+  }
+
+  .errorMessage {
+    @apply text-error;
+  }
 }

@@ -48,7 +48,6 @@ const LogInPage = () => {
           uid: data?.user?.uid,
         });
       }
-
       navigate("/bookshelf");
     } catch (err) {
       console.error(err);
@@ -56,49 +55,40 @@ const LogInPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-15 items-center justify-center h-full md:flex-row md:mt-20">
-      <div className="">
-        <img
-          src="/pop.png"
-          className="hidden md:block w-[250px] m-10 pt-10"
-        ></img>
-      </div>
-      <section className="mx-auto">
-        <div className="flex flex-col gap-2">
-          <h1 className="py-10 font-extrabold text-4xl w-[320px] mt-20 md:m-0">
-            Login
-          </h1>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={email}
-              required
-              onChange={handleInputChange}
-              className="input w-[320px] pl-3 py-2 rounded-md"
-            />
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={password}
-              required
-              onChange={handleInputChange}
-              className="input w-[320px] pl-3 py-2 rounded-md"
-            />
-            <button type="submit" className="btn btn-primary">
-              로그인
-            </button>
-          </form>
-          <button onClick={handleGoogleLogin} className="btn">
-            구글 계정으로 로그인
-          </button>
-          <button onClick={() => navigate("/signup")} className="btn">
-            회원가입
-          </button>
-        </div>
-      </section>
+    <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
+      <h1 className="py-10 font-extrabold text-4xl w-[320px] mt-20">Login</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={email}
+          required
+          onChange={handleInputChange}
+          className="input w-[320px] pl-3 py-2 rounded-md"
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          onChange={handleInputChange}
+          className="input w-[320px] pl-3 py-2 rounded-md"
+        />
+        <button type="submit" className="btn">
+          로그인
+        </button>
+      </form>
+      <button onClick={handleGoogleLogin} className="btn w-[320px] btn-accent">
+        구글 계정으로 로그인
+      </button>
+      <button
+        onClick={() => navigate("/signup")}
+        className="btn w-[320px] btn-reverse"
+      >
+        회원가입
+      </button>
     </section>
   );
 };

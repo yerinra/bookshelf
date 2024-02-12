@@ -6,6 +6,7 @@ import RoutesPage from "./RoutesPage";
 // import useThemeEffect from "./hooks/useThemeEffect";
 import useThemeMode from "./hooks/useThemeMode";
 import useUser from "./hooks/useUser";
+import { Toaster } from "sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -16,6 +17,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <RoutesPage />
+        <Toaster position="top-center" />
       </Router>
       {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
