@@ -15,11 +15,11 @@ export default function MyBook({
   return (
     <div
       key={`${book.isbn13}-${book.title}`}
-      className="flex flex-col relative gap-10 justify-center items-center border border-base-content rounded-lg p-3"
+      className="flex flex-col relative gap-10 justify-center items-center border border-l-border dark:border-d-border rounded-lg p-2 mt-2"
     >
-      <ul className="flex flex-col gap-3 p-3 bg-blue-100 rounded-xl border-2 border-red-600">
-        <li className="font-bold text-xl ">{book.title}</li>
-        <li className="text-neutral-400 text-sm">{book.author}</li>
+      <ul className="flex flex-col gap-3 p-3 rounded-xl">
+        <li className="font-bold text-lg ">{book.title}</li>
+        <li className="text-xs">{book.author}</li>
         <li className="flex gap-1 justify-center flex-wrap">
           {book.hashtags &&
             book.hashtags?.map((tag: string, i: number) => (
@@ -36,11 +36,15 @@ export default function MyBook({
             ))}
         </li>
       </ul>
-      <StarFilledIcon />
-      <StarIcon />
-
+      <section className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((v) => (
+          <button>
+            <StarIcon />
+          </button>
+        ))}
+      </section>
       <input
-        className="w-36 pl-2 pb-0.5 bg-inherit border border-neutral-400 border-t-0 border-l-0 border-r-0 border-b-3 placeholder:text-neutral-400 text-sm focus:outline-none "
+        className="w-32 pl-2 pb-0.5 bg-l-bg-primary border border-l-text-secondary border-t-0 border-l-0 border-r-0 border-b-3 placeholder:text-l-text-secondary text-xs focus:outline-none "
         type="text"
         onChange={(e) => handleTagChange(e)}
         onKeyUp={(e) => handleAddTag(e, book.isbn13)}

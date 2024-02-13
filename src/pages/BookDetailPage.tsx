@@ -123,13 +123,28 @@ const BookDetailPage = () => {
               <div className="text-neutral-400">{data.author}</div>
               <div>{data.description}</div>
               <div>총 {data.itemPage}쪽</div>
-              <button className="mt-3" onClick={handleClick}>
-                {isbn && bookList?.map((v) => v.isbn13).includes(isbn) ? (
-                  <BookmarkFilledIcon />
-                ) : (
-                  <BookmarkIcon />
-                )}
-              </button>
+
+              {isbn && bookList?.map((v) => v.isbn13).includes(isbn) ? (
+                <>
+                  <button
+                    className="btn btn-reverse max-w-xs mt-3 flex  gap-3 items-center justify-center"
+                    onClick={handleClick}
+                  >
+                    <BookmarkFilledIcon width={20} height={20} />
+                    <div>책장에 추가된 책입니다.</div>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="btn max-w-xs mt-3 flex  gap-3 items-center justify-center"
+                    onClick={handleClick}
+                  >
+                    <BookmarkIcon width={20} height={20} />
+                    <div>책장에 추가하기</div>
+                  </button>
+                </>
+              )}
             </div>
           </section>
         ))}

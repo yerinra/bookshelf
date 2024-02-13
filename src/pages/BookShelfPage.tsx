@@ -68,6 +68,7 @@ const BookShelfPage = () => {
     });
     setSortedBooks(newBooks);
   }, [categorizedBooks, sortBy]);
+
   const handleTagRemove = async (tagName: string, isbn13: string) => {
     try {
       if (currentUser) {
@@ -125,14 +126,27 @@ const BookShelfPage = () => {
 
   return (
     <section className="flex flex-col items-center">
-      <h1 className="mt-14 font-bold pl-10">{currentUser}의 책장</h1>
-      <Select
-        options={options}
-        onChange={(option) => {
-          setSortBy(option.value);
-          console.log(option.value);
-        }}
-      />
+      <div className="flex">
+        <h1 className="font-bold self-start">{currentUser}의 책장</h1>
+
+        <Select
+          options={options}
+          onChange={(option) => {
+            if (option) setSortBy(option.value as SortOptions);
+          }}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 5,
+            colors: {
+              ...theme.colors,
+              text: "#000",
+              font: "#000",
+              primary25: "#ffbb55",
+              primary: "#000",
+            },
+          })}
+        />
+      </div>
       <div className="flex flex-row">
         <main className="max-w-4/5 flex flex-col gap-3 shrink-0">
           {bookList.length == 0 && <>책이 없습니다.</>}
