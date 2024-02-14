@@ -6,10 +6,10 @@ import { Outlet } from "react-router-dom";
 
 export default function BasicLayout() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mx-auto max-w-[976px] justify-center w-full">
       <NavBar />
 
-      <section>
+      <section className="flex justify-center items-center">
         <Outlet />
         <DarkModeBtn />
         <ScrollTopBtn />
