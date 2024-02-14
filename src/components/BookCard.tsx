@@ -39,7 +39,7 @@ export default function BookCard({
   const { title, author, cover, isbn13 } = book;
 
   return (
-    <div className="flex gap-4 items-start text-start mx-10 mb-5 border border-1 border-slate-700 px-7 py-5 rounded-lg relative">
+    <div className="flex gap-5 items-start text-start mx-10 mb-4 border border-1 border-l-border dark:border-d-border px-7 py-5 rounded-lg relative min-h-[12rem] max-w-[56rem]">
       <img
         onClick={handleBookClick}
         src={cover}
@@ -52,7 +52,7 @@ export default function BookCard({
         >
           {title}
         </div>
-        <div className="text-gray-400 text-xs">
+        <div className="text-xs text-l-text-secondary">
           {author.length > 30 ? author.slice(0, 30) + " ..." : author}
         </div>
         <button className="mt-3" onClick={handleBookMarkClick}>

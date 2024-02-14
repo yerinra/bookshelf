@@ -21,6 +21,8 @@ import { hashtagsState, selectedTagState } from "../store/hashtagsState";
 import { Book, SortOptions } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import Tags from "../components/Tags";
+import { toast } from "sonner";
+import { ratingState } from "../store/ratingState";
 
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
@@ -36,6 +38,7 @@ const BookShelfPage = () => {
       (x, y) => y.createdAt.seconds - x.createdAt.seconds
     )
   );
+  const rating = useRecoilValue(ratingState);
 
   const options = [
     { value: "createdAt", label: "추가 순" },
@@ -53,7 +56,6 @@ const BookShelfPage = () => {
   }, [categorizedBooks, setSelectedTag]);
 
   useEffect(() => {
-    console.log(sortedBooks, sortBy);
     const newBooks = [...(categorizedBooks || [])].sort((x, y) => {
       if (sortBy === "createdAt") {
         return x.createdAt.seconds - y.createdAt.seconds;
@@ -63,6 +65,9 @@ const BookShelfPage = () => {
       }
       if (sortBy === "title") {
         return x.title > y.title ? 1 : x.title < y.title ? -1 : 0;
+      }
+      if (sortBy === "rating") {
+        return x.rating > y.rating ? -1 : x.rating < y.rating ? 1 : 0;
       }
       return 0;
     });
@@ -99,7 +104,7 @@ const BookShelfPage = () => {
           return;
         }
         if ((e.target as HTMLInputElement).value.trim().length > 10) {
-          alert("태그는 열 글자 이내로 입력해주세요.");
+          toast.error("태그는 열 글자 이내로 입력해주세요.");
           return;
         }
         const bookDocRef = doc(db, "users", currentUser, "books", isbn);
@@ -118,37 +123,60 @@ const BookShelfPage = () => {
   };
 
   const handleBookRemove = async (isbn13: string) => {
-    if (currentUser) {
-      const bookDocRef = doc(db, "users", currentUser, "books", isbn13);
-      await deleteDoc(bookDocRef);
+    try {
+      if (currentUser) {
+        const bookDocRef = doc(db, "users", currentUser, "books", isbn13);
+        await deleteDoc(bookDocRef);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateRating = async (isbn13: string, num: number) => {
+    try {
+      if (currentUser) {
+        const bookDocRef = doc(db, "users", currentUser, "books", isbn13);
+        await updateDoc(bookDocRef, { rating: num });
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
   return (
-    <section className="flex flex-col items-center">
-      <div className="flex">
-        <h1 className="font-bold self-start">{currentUser}의 책장</h1>
-
-        <Select
-          options={options}
-          onChange={(option) => {
-            if (option) setSortBy(option.value as SortOptions);
-          }}
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 5,
-            colors: {
-              ...theme.colors,
-              text: "#000",
-              font: "#000",
-              primary25: "#ffbb55",
-              primary: "#000",
-            },
-          })}
-        />
+    <section className="flex flex-col items-center mt-10 gap-5 w-full">
+      <div className="flex justify-between w-4/5 items-center">
+        <h1 className="font-bold ml-10 md:ml-36">나의 책장</h1>
+        <div className="mr-10 ">
+          <Select
+            options={options}
+            onChange={(option) => {
+              if (option) setSortBy(option.value as SortOptions);
+            }}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 5,
+              colors: {
+                ...theme.colors,
+                text: "#000",
+                font: "#000",
+                primary25: "#ffbb55",
+                primary: "#000",
+              },
+            })}
+          />
+        </div>
       </div>
-      <div className="flex flex-row">
-        <main className="max-w-4/5 flex flex-col gap-3 shrink-0">
+      <div className="flex flex-col md:flex-row-reverse gap-2">
+        <section>
+          <Tags
+            allTags={allTags}
+            handleSelectTag={handleSelectTag}
+            selectedTag={selectedTag}
+          />
+        </section>
+        <main className="flex flex-col items-center md:ml-10">
           {bookList.length == 0 && <>책이 없습니다.</>}
           {sortedBooks.map((book: Book) => (
             <MyBook
@@ -158,15 +186,10 @@ const BookShelfPage = () => {
               handleTagChange={handleTagChange}
               handleAddTag={handleAddTag}
               handleBookRemove={handleBookRemove}
+              updateRating={updateRating}
             />
           ))}
         </main>
-
-        <Tags
-          allTags={allTags}
-          handleSelectTag={handleSelectTag}
-          selectedTag={selectedTag}
-        />
       </div>
     </section>
   );

@@ -16,6 +16,7 @@ import { db } from "../service/firebase";
 export default function useBookShelfBooks() {
   const currentUser = useRecoilValue(userState);
   const setBookList = useSetRecoilState(booksState);
+
   const setAllTags = useSetRecoilState(hashtagsState);
   const selectedTag = useRecoilValue(selectedTagState);
   const setCategorizedBooks = useSetRecoilState(categorizedBookState);
@@ -31,7 +32,7 @@ export default function useBookShelfBooks() {
             doc?.docs?.forEach((doc) => {
               books.push({ ...doc.data() } as Book);
             });
-            console.log(books);
+            console.log("books are", books);
             const hashtags = [...new Set(books.map((v) => v.hashtags).flat())];
             setBookList(books);
 

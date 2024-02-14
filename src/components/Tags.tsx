@@ -8,9 +8,8 @@ type Tags = {
 
 export default function Tags({ allTags, handleSelectTag, selectedTag }: Tags) {
   return (
-    <div className="flex flex-col gap-5 mt-5 mb-3 py-5 border border-l-border p-10 rounded-lg shrink-0">
-      <h2 className="font-bold text-start ml-2">나의 태그</h2>
-      <div className="flex flex-col gap-2 flex-wrap">
+    <div className="flex gap-5 mb-3 py-5 p-10 rounded-lg dark:border-d-border ">
+      <div className="flex flex-row md:flex-col gap-2 flex-wrap">
         {allTags &&
           allTags.map((tag, i) => (
             <Tag

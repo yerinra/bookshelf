@@ -1,9 +1,6 @@
-import {
-  Cross1Icon,
-  Cross2Icon,
-  StarFilledIcon,
-  StarIcon,
-} from "@radix-ui/react-icons";
+import { Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
+import Rating from "./Rating";
 
 export default function MyBook({
   book,
@@ -11,47 +8,57 @@ export default function MyBook({
   handleTagChange,
   handleAddTag,
   handleBookRemove,
+  updateRating,
 }) {
+  const navigate = useNavigate();
+
   return (
     <div
       key={`${book.isbn13}-${book.title}`}
-      className="flex flex-col relative gap-10 justify-center items-center border border-l-border dark:border-d-border rounded-lg p-2 mt-2"
+      className="flex flex-col max-w-sm min-w-[375px] relative gap-5 justify-center items-start border border-l-border dark:border-d-border rounded-lg px-4 py-2 mb-2"
     >
-      <ul className="flex flex-col gap-3 p-3 rounded-xl">
-        <li className="font-bold text-lg ">{book.title}</li>
+      <ul className="flex flex-col w-full items-start gap-3 p-3 rounded-xl">
+        <li
+          className="font-bold text-md cursor-pointer"
+          onClick={() => navigate(`/book/${book.isbn13}`)}
+        >
+          {book.title}
+        </li>
         <li className="text-xs">{book.author}</li>
         <li className="flex gap-1 justify-center flex-wrap">
           {book.hashtags &&
             book.hashtags?.map((tag: string, i: number) => (
-              <button className="btn btn-xs btn-outline" key={i}>
+              <button
+                className="flex gap-1 justify-center items-center text-xs py-1 px-2 border bg-l-bg-secondary border-l-border rounded-3xl dark:border-d-border dark:bg-d-bg-secondary cursor-default"
+                key={i}
+              >
                 <div className="tagName">{tag}</div>
                 <div
+                  className="cursor-pointer"
                   onClick={() => {
                     handleTagRemove(tag, book.isbn13);
                   }}
                 >
-                  x
+                  <Cross2Icon width="12" />
                 </div>
               </button>
             ))}
         </li>
       </ul>
-      <section className="flex gap-1">
-        {[1, 2, 3, 4, 5].map((v) => (
-          <button>
-            <StarIcon />
-          </button>
-        ))}
-      </section>
+      <Rating
+        isbn13={book.isbn13}
+        savedRating={book.rating}
+        updateRating={updateRating}
+      />
       <input
-        className="w-32 pl-2 pb-0.5 bg-l-bg-primary border border-l-text-secondary border-t-0 border-l-0 border-r-0 border-b-3 placeholder:text-l-text-secondary text-xs focus:outline-none "
+        className="w-32 mx-2 px-2 pb-0.5 bg-l-bg-secondary dark:bg-d-bg-secondary placeholder:text-l-text-secondary text-xs focus:outline-none"
         type="text"
         onChange={(e) => handleTagChange(e)}
         onKeyUp={(e) => handleAddTag(e, book.isbn13)}
         placeholder="해시태그를 입력하세요"
       />
       <button
-        className="p-2 absolute top-0 right-0"
+        className="p-2 absolute top-1 right-1"
         onClick={() => handleBookRemove(book.isbn13)}
       >
         <Cross1Icon className="text-3xl " />

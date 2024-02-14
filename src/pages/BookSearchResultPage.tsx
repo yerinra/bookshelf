@@ -40,6 +40,7 @@ export default function BookSearchResultPage() {
           isbn13,
           hashtags: [],
           itemPage: 1000,
+          rating: 0,
           createdAt: serverTimestamp(),
         });
       }

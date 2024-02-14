@@ -70,6 +70,7 @@ const BookDetailPage = () => {
           cover: selectedData[0].cover,
           isbn13: isbn,
           hashtags: [],
+          rating: 0,
           itemPage: selectedData[0].itemPage,
           createdAt: serverTimestamp(),
         });
