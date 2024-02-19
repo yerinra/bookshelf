@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle, logInWithEmailAndPassword } from "../service/auth";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loginState, userState } from "../store/userState";
+import { userState } from "../store/userState";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 
@@ -10,13 +10,12 @@ const LogInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = useRecoilValue(loginState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser || login) navigate("/");
-  }, [currentUser, login, navigate]);
+    if (currentUser) navigate("/");
+  }, [currentUser, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
