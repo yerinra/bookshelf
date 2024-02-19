@@ -11,10 +11,6 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
-  where,
-  query,
-  getDocs,
-  orderBy,
 } from "firebase/firestore";
 import MyBook from "../components/MyBook";
 import { hashtagsState, selectedTagState } from "../store/hashtagsState";
@@ -22,23 +18,17 @@ import { Book, SortOptions } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import Tags from "../components/Tags";
 import { toast } from "sonner";
-import { ratingState } from "../store/ratingState";
+import useSort from "../hooks/useSort";
+import useThemeMode from "../hooks/useThemeMode";
 
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
-  const [bookList, setBookList] = useRecoilState(booksState);
+  const bookList = useRecoilValue(booksState);
   const [newHashtag, setNewHashtag] = useState<string | null>("");
-  const [allTags, setAllTags] = useRecoilState(hashtagsState);
+  const allTags = useRecoilValue(hashtagsState);
   const [selectedTag, setSelectedTag] = useRecoilState(selectedTagState);
-  const [categorizedBooks, setCategorizedBooks] =
-    useRecoilState(categorizedBookState);
-  const [sortBy, setSortBy] = useState<SortOptions>("createdAt");
-  const [sortedBooks, setSortedBooks] = useState(
-    [...(categorizedBooks || [])].sort(
-      (x, y) => y.createdAt.seconds - x.createdAt.seconds
-    )
-  );
-  const rating = useRecoilValue(ratingState);
+  const [categorizedBooks] = useRecoilState(categorizedBookState);
+  const [theme] = useThemeMode();
 
   const options = [
     { value: "createdAt", label: "추가 순" },
@@ -55,24 +45,7 @@ const BookShelfPage = () => {
     }
   }, [categorizedBooks, setSelectedTag]);
 
-  useEffect(() => {
-    const newBooks = [...(categorizedBooks || [])].sort((x, y) => {
-      if (sortBy === "createdAt") {
-        return x.createdAt.seconds - y.createdAt.seconds;
-      }
-      if (sortBy === "author") {
-        return x.author > y.author ? 1 : x.author < y.author ? -1 : 0;
-      }
-      if (sortBy === "title") {
-        return x.title > y.title ? 1 : x.title < y.title ? -1 : 0;
-      }
-      if (sortBy === "rating") {
-        return x.rating > y.rating ? -1 : x.rating < y.rating ? 1 : 0;
-      }
-      return 0;
-    });
-    setSortedBooks(newBooks);
-  }, [categorizedBooks, sortBy]);
+  const { sortedBooks, setSortBy } = useSort();
 
   const handleTagRemove = async (tagName: string, isbn13: string) => {
     try {
@@ -100,7 +73,7 @@ const BookShelfPage = () => {
         e.key === "Enter" &&
         e.currentTarget.value.trim() !== ""
       ) {
-        if (bookList.find((v) => v.isbn13 == isbn)!.hashtags.length > 4) {
+        if (bookList.find((v) => v.isbn13 == isbn)!.hashtags!.length > 4) {
           return;
         }
         if ((e.target as HTMLInputElement).value.trim().length > 10) {
@@ -154,6 +127,8 @@ const BookShelfPage = () => {
             onChange={(option) => {
               if (option) setSortBy(option.value as SortOptions);
             }}
+            className="my-react-select-container"
+            classNamePrefix="my-react-select"
             theme={(theme) => ({
               ...theme,
               borderRadius: 5,

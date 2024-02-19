@@ -16,6 +16,7 @@ export default {
       "l-border": "#ebebeb",
       "d-border": "#333333",
       accent: "#ffbb55",
+      "accent-fade": "#F3B251",
       error: "rgb(239 68 68)",
     },
   },

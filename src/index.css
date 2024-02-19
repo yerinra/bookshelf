@@ -7,7 +7,6 @@
   font-family: Inter, system-ui, Avenir, sans-serif;
   line-height: 1.5;
   font-weight: 500;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -74,7 +73,7 @@ body.dark {
   }
 
   .btn-accent {
-    @apply bg-accent hover:bg-[#F3B251];
+    @apply bg-accent hover:bg-accent-fade;
   }
 
   .btn-reverse {
@@ -87,5 +86,40 @@ body.dark {
 
   .errorMessage {
     @apply text-error;
+  }
+
+  /* .my-react-select-container */
+  .my-react-select-container .my-react-select__control {
+    @apply bg-l-bg-primary dark:bg-d-bg-primary border-2 border-l-border dark:border-d-border hover:bg-l-bg-secondary dark:hover:bg-d-bg-secondary;
+  }
+
+  .my-react-select-container .my-react-select__control--is-focused {
+    @apply hover:border-accent dark:hover:border-accent shadow-none;
+  }
+
+  .my-react-select-container .my-react-select__menu {
+    @apply bg-l-bg-primary dark:bg-d-bg-primary border-2 border-l-border dark:border-d-border shadow-none;
+  }
+
+  .my-react-select-container .my-react-select__option {
+    @apply text-l-text-primary dark:text-d-text-primary bg-l-bg-primary hover:bg-l-bg-secondary dark:bg-d-bg-primary dark:hover:bg-d-bg-secondary;
+  }
+
+  .my-react-select-container .my-react-select__option--is-focused {
+    @apply bg-l-bg-secondary dark:bg-d-bg-secondary;
+  }
+
+  .my-react-select-container .my-react-select__option--is-selected {
+    @apply bg-accent dark:bg-accent;
+  }
+
+  .my-react-select-container .my-react-select__indicator-separator {
+    @apply bg-l-bg-secondary;
+  }
+
+  .my-react-select-container .my-react-select__input-container,
+  .my-react-select-container .my-react-select__placeholder,
+  .my-react-select-container .my-react-select__single-value {
+    @apply text-l-text-primary dark:text-d-text-primary;
   }
 }
