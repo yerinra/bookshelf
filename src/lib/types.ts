@@ -8,10 +8,11 @@ export type HashTags = string[];
 export type Book = {
   author: string;
   cover: string;
-  hashtags: HashTags;
+  hashtags?: HashTags;
   isbn13: string;
   itemPage: number;
   title: string;
+  rating?: 0 | 1 | 2 | 3 | 4 | 5;
   createdAt: Timestamp;
 };
 
