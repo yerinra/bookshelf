@@ -5,6 +5,7 @@ type Tag = {
   handleSelectTag: (tagName: string) => void;
   tag: string;
 };
+
 export default function Tag({ selectedTag, handleSelectTag, tag }: Tag) {
   return (
     <button

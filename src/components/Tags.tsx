@@ -1,5 +1,6 @@
 import { HashTags } from "../lib/types";
 import Tag from "./Tag";
+
 type Tags = {
   allTags: HashTags;
   handleSelectTag: (tagName: string) => void;
