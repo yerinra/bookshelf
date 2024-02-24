@@ -5,6 +5,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
+import H1 from "../components/H1";
+import Button from "../components/button/Button";
 
 const LogInPage = () => {
   const [email, setEmail] = useState("");
@@ -55,7 +57,7 @@ const LogInPage = () => {
 
   return (
     <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
-      <h1 className="py-10 font-extrabold text-4xl w-[320px] mt-20">Login</h1>
+      <H1>Log In</H1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <input
           name="email"
@@ -75,19 +77,18 @@ const LogInPage = () => {
           onChange={handleInputChange}
           className="input w-[320px] pl-3 py-2 rounded-md"
         />
-        <button type="submit" className="btn">
-          로그인
-        </button>
+        <Button type="submit">로그인</Button>
       </form>
-      <button onClick={handleGoogleLogin} className="btn w-[320px] btn-accent">
-        구글 계정으로 로그인
-      </button>
-      <button
-        onClick={() => navigate("/signup")}
-        className="btn w-[320px] btn-reverse"
-      >
-        회원가입
-      </button>
+      <div className="w-[320px]">
+        <Button onClick={handleGoogleLogin} theme="accent">
+          구글 계정으로 로그인
+        </Button>
+      </div>
+      <div className="w-[320px]">
+        <Button onClick={() => navigate("/signup")} theme="reverse">
+          회원가입
+        </Button>
+      </div>
     </section>
   );
 };

@@ -1,14 +1,6 @@
 import { useParams } from "react-router-dom";
 import useBook from "../hooks/useBook";
-import { useEffect, useState } from "react";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { userState } from "../store/userState";
@@ -16,6 +8,8 @@ import { booksState } from "../store/booksState";
 import { BookmarkFilledIcon, BookmarkIcon } from "@radix-ui/react-icons";
 import SkeletonBookDetail from "../components/SkeletonBookDetail";
 import { Book, BookInfo } from "../lib/types";
+import useUpdatedBooks from "../hooks/useUpdatedBooks";
+import Button from "../components/button/Button";
 
 const BookDetailPage = () => {
   const { isbn } = useParams();
@@ -23,45 +17,20 @@ const BookDetailPage = () => {
   const [bookList, setBookList] = useRecoilState(booksState);
   const { isLoading, data } = useBook(isbn);
 
-  const selectedData = data?.map((v) => {
+  const selectedData = data?.map((v: BookInfo) => {
     return {
       author: v.author,
       title: v.title,
       cover: v.cover,
       description: v.description,
       isbn13: v.isbn13,
-      pubDate: v.pubDate,
       itemPage: v?.subInfo?.itemPage,
     };
   });
 
-  useEffect(() => {
-    const getAllBooks = async () => {
-      try {
-        if (currentUser) {
-          onSnapshot(collection(db, "users", currentUser, "books"), (doc) => {
-            const mapped = doc?.docs?.map((doc) => doc?.data());
-            setBookList(mapped as Book[]);
-            if (mapped.filter((v) => v?.isbn13 === isbn).length !== 0) {
-              // setAdded(true);
-            } else {
-              // setAdded(false);
-            }
-          });
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    if (currentUser && data) getAllBooks();
-  }, [currentUser, data, isbn, setBookList]);
+  useUpdatedBooks();
 
-  const handleAdd = async (
-    isbn13: string,
-    title: string,
-    author: string,
-    cover: string
-  ) => {
+  const handleAdd = async () => {
     try {
       if (currentUser && isbn) {
         await setDoc(doc(db, "users", currentUser, "books", isbn), {
@@ -95,62 +64,65 @@ const BookDetailPage = () => {
       if (bookList?.map((v) => v.isbn13).includes(isbn)) {
         handleDelete();
       } else {
-        handleAdd(
-          isbn,
-          selectedData.title,
-          selectedData.author,
-          selectedData.author
-        );
+        handleAdd();
       }
     }
   };
 
   return (
-    <div className="mt-16 mx-20">
+    <section className="mt-16 mx-20">
       {isLoading && <SkeletonBookDetail />}
+
       {selectedData &&
         selectedData.map((data: BookInfo) => (
-          <section
-            key={data.isbn13}
-            className="flex flex-col md:flex-row gap-8"
-          >
+          <div key={data.isbn13} className="flex flex-col md:flex-row gap-8">
             <img
               src={data.cover}
               alt="book cover image"
               className="rounded-lg max-w-[240px] mx-auto"
             />
             <div className="flex flex-col gap-3 text-start">
-              <div className="font-extrabold text-2xl">{data.title}</div>
-              <div className="text-neutral-400">{data.author}</div>
-              <div>{data.description}</div>
-              <div>총 {data.itemPage}쪽</div>
+              <p className="font-extrabold text-2xl">{data.title}</p>
+              <p className="text-neutral-400">{data.author}</p>
+              <p>{data.description}</p>
+              <p>총 {data.itemPage}쪽</p>
 
               {isbn && bookList?.map((v) => v.isbn13).includes(isbn) ? (
-                <>
-                  <button
-                    className="btn btn-reverse max-w-xs mt-3 flex  gap-3 items-center justify-center"
-                    onClick={handleClick}
-                  >
-                    <BookmarkFilledIcon width={20} height={20} />
-                    <div>책장에 추가된 책입니다.</div>
-                  </button>
-                </>
+                <DefaultButton handleClick={handleClick} />
               ) : (
-                <>
-                  <button
-                    className="btn max-w-xs mt-3 flex  gap-3 items-center justify-center"
-                    onClick={handleClick}
-                  >
-                    <BookmarkIcon width={20} height={20} />
-                    <div>책장에 추가하기</div>
-                  </button>
-                </>
+                <AddedButton handleClick={handleClick} />
               )}
             </div>
-          </section>
+          </div>
         ))}
-    </div>
+    </section>
   );
 };
 
 export default BookDetailPage;
+
+type ButtonProps = {
+  handleClick: () => void;
+};
+
+function DefaultButton({ handleClick }: ButtonProps) {
+  return (
+    <>
+      <Button onClick={handleClick}>
+        <BookmarkFilledIcon width={20} height={20} className="mr-2" />
+        <div>책장에 추가된 책입니다.</div>
+      </Button>
+    </>
+  );
+}
+
+function AddedButton({ handleClick }: ButtonProps) {
+  return (
+    <>
+      <Button theme="reverse" onClick={handleClick}>
+        <BookmarkIcon width={20} height={20} className="mr-2" />
+        <div>책장에 추가하기</div>
+      </Button>
+    </>
+  );
+}

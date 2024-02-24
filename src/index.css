@@ -54,32 +54,6 @@ body.dark {
     @apply outline-l-text-secondary dark:outline-d-text-secondary;
   }
 
-  .btn {
-    @apply py-2 h-[48px] rounded-lg border border-l-border dark:border-d-border text-l-text-primary dark:text-d-text-primary hover:bg-l-bg-secondary dark:hover:bg-d-bg-secondary;
-  }
-
-  .btn-google {
-    @apply bg-[#ff6a6b] text-d-text-primary hover:bg-[#fb7777];
-  }
-
-  .btn-home {
-    @apply rounded-[100px] w-[200px] first-of-type:border-l-text-secondary first-of-type:dark:border-d-text-secondary hover:bg-l-text-primary  hover:text-l-bg-primary hover:dark:bg-d-bg-secondary
-  last-of-type:bg-accent 
-  last-of-type:hover:bg-[#F3B251] last-of-type:hover:dark:bg-[#F3B251] last-of-type:dark:text-l-text-primary;
-  }
-
-  .btn-nav {
-    @apply w-[80px] h-[45px] border-none;
-  }
-
-  .btn-accent {
-    @apply bg-accent hover:bg-accent-fade;
-  }
-
-  .btn-reverse {
-    @apply bg-d-bg-primary text-d-text-primary dark:bg-l-bg-primary dark:text-l-text-primary hover:bg-d-bg-secondary hover:dark:bg-l-bg-secondary;
-  }
-
   .skeleton {
     @apply bg-l-border dark:bg-d-border rounded-lg;
   }

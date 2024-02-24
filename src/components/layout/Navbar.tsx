@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../store/userState";
 import SearchInput from "../SearchInput";
 import { toast } from "sonner";
+import Button from "../button/Button";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -25,9 +26,9 @@ export default function NavBar() {
   return (
     <nav className="flex justify-between mx-20 py-3">
       <Link to="/" className="flex items-center justify-center gap-3">
-        <button className="p-2 text-2xl font-extrabold bg-[#ffbb55] rounded-full">
+        <Button theme="circle-accent">
           <FrameIcon width="20" height="20" />
-        </button>
+        </Button>
         <h1 className="text-xl font-extrabold cursor-pointer">BOOK:SHELF</h1>
       </Link>
       <section className="flex items-center">
@@ -48,17 +49,17 @@ function LoggedInButtons({ logOut }: LoggedInButtonsProps) {
   const navigate = useNavigate();
   return (
     <>
-      <button
+      <Button
         onClick={() => {
           navigate("/bookshelf");
         }}
-        className="btn btn-nav hidden sm:block"
+        theme="sm-nav"
       >
         내 책장
-      </button>
-      <button onClick={logOut} className="btn btn-nav hidden md:block">
+      </Button>
+      <Button onClick={logOut} theme="md-nav">
         로그아웃
-      </button>
+      </Button>
     </>
   );
 }
@@ -68,22 +69,22 @@ function LoggedOutButtons() {
 
   return (
     <>
-      <button
+      <Button
         onClick={() => {
           navigate("/signup");
         }}
-        className="btn btn-nav hidden md:block"
+        theme="md-nav"
       >
         회원가입
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => {
           navigate("/login");
         }}
-        className="btn btn-nav hidden sm:block"
+        theme="sm-nav"
       >
         로그인
-      </button>
+      </Button>
     </>
   );
 }

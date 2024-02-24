@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
+import Button from "../components/button/Button";
 
 export default function HomePage() {
   const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
+
   return (
     <div className="flex flex-col h-100 justify-center items-center gap-16">
       <p className="text-5xl font-extrabold mt-44">
@@ -15,23 +17,23 @@ export default function HomePage() {
         독서생활을 즐겨보세요 🎉
       </p>
       <section className="flex flex-col sm:flex-row gap-4">
-        <button
-          className="btn btn-home"
+        <Button
+          theme="rounded-reverse"
           onClick={() => {
             navigate("/info");
           }}
         >
           무엇을 할 수 있나요?
-        </button>
-        <button
-          className="btn btn-home"
+        </Button>
+        <Button
+          theme="rounded-accent"
           onClick={() => {
             if (currentUser) navigate("/bookshelf");
             else navigate("/login");
           }}
         >
           책장 보러가기 &rarr;
-        </button>
+        </Button>
       </section>
     </div>
   );
