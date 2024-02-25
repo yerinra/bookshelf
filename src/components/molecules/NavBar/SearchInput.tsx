@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Input from "../../atoms/Input";
 
 const SearchInput = () => {
-  const [keyword, setKeyword] = useState<string>("");
+  const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setKeyword("");
     navigate(`/books/${keyword}`);
@@ -16,11 +17,10 @@ const SearchInput = () => {
 
   return (
     <form className="hidden md:flex px-5 w-full" onSubmit={handleSubmit}>
-      <input
+      <Input
         type="text"
         value={keyword}
-        placeholder="책의 제목을 입력하세요. "
-        className="input border w-full border-l-border dark:border-d-border px-3 py-2 rounded-lg"
+        placeholder="책의 제목을 입력하세요."
         onChange={handleChange}
       />
     </form>

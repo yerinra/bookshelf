@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
-import Button from "../components/button/Button";
+import Button from "../components/atoms/Button";
 
 export default function HomePage() {
   const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col h-100 justify-center items-center gap-16">
+    <main className="flex flex-col h-100 justify-center items-center gap-16">
       <p className="text-5xl font-extrabold mt-44">
         <span className="text-accent">나만의 책장</span>을 만들어 보세요.
       </p>
@@ -32,9 +32,9 @@ export default function HomePage() {
             else navigate("/login");
           }}
         >
-          책장 보러가기 &rarr;
+          책장 보러가기<span className="ml-2">&rarr;</span>
         </Button>
       </section>
-    </div>
+    </main>
   );
 }

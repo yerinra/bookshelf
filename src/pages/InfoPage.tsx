@@ -1,7 +1,9 @@
+import H1 from "../components/atoms/H1";
+
 const InfoPage = () => {
   return (
-    <section className="flex flex-col gap-10 m-32 mb-0 items-center">
-      <h1 className="font-extrabold text-3xl">무엇을 할 수 있나요?</h1>
+    <section className="flex flex-col gap-10 mb-0 items-center">
+      <H1>무엇을 할 수 있나요?</H1>
       <ul className="flex flex-col gap-2 items-start">
         <li>1. 책 제목을 검색하여 책을 찾을 수 있습니다.</li>
         <li>2. 책장에 책을 추가하거나 삭제할 수 있습니다.</li>
@@ -11,7 +13,7 @@ const InfoPage = () => {
         <li>
           6. 추가 순, 제목 순, 작가 순, 별점 순으로 책들을 정렬할 수 있습니다.
         </li>
-        <li className="text-primary">
+        <li className="text-accent">
           7. 독서 진행 상황을 기록할 수 있습니다. (기다려주세요!)
         </li>
       </ul>

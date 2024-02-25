@@ -1,7 +1,7 @@
 import { SunIcon } from "@radix-ui/react-icons";
 import { MoonIcon } from "@radix-ui/react-icons";
 
-import useThemeMode from "../hooks/useThemeMode";
+import useThemeMode from "../../../hooks/useThemeMode";
 
 export default function DarkModeBtn() {
   const [theme, setTheme] = useThemeMode();

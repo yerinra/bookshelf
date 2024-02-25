@@ -1,7 +1,7 @@
-import DarkModeBtn from "./DarkModeBtn";
-import ScrollTopBtn from "./ScrollTopBtn";
-import Footer from "./layout/Footer";
-import NavBar from "./layout/Navbar";
+import DarkModeBtn from "../molecules/FixedButtons/DarkModeBtn";
+import ScrollTopBtn from "../molecules/FixedButtons/ScrollTopBtn";
+import Footer from "../organisms/Footer";
+import NavBar from "../organisms/Navbar";
 import { Outlet } from "react-router-dom";
 
 export default function BasicLayout() {

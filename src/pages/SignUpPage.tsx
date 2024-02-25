@@ -6,8 +6,10 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TSignUpSchema, signUpSchema } from "../lib/types";
-import H1 from "../components/H1";
-import Button from "../components/button/Button";
+import H1 from "../components/atoms/H1";
+import SignUpError from "../components/molecules/SignUpForm/SignUpError";
+import SignUpButtons from "../components/molecules/SignUpForm/SignUpButtons";
+import SignUpInputs from "../components/molecules/SignUpForm/SignUpInputs";
 
 export default function SignUpPage() {
   const {
@@ -44,40 +46,13 @@ export default function SignUpPage() {
     <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
       <H1>Sign Up</H1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-        {errors.email && (
-          <p className="errorMessage">{`${errors.email.message}`}</p>
-        )}
-        {errors.password && (
-          <p className="errorMessage">{`${errors.password.message}`}</p>
-        )}
-        {errors.confirmPassword && (
-          <p className="errorMessage">{`${errors.confirmPassword.message}`}</p>
-        )}
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="Email"
-          className="input w-[320px] pl-3 py-2 rounded-md"
-        />
-        <input
-          {...register("password")}
-          type="password"
-          placeholder="Password"
-          className="input w-[320px] pl-3 py-2 rounded-md"
-        />
-        <input
-          {...register("confirmPassword")}
-          type="password"
-          placeholder="Confirm Password"
-          className="input w-[320px] pl-3 py-2 rounded-md"
-        />
-        <Button theme="reverse" type="submit" disabled={isSubmitting}>
-          회원 가입하기
-        </Button>
-        <Button theme="accent" onClick={() => navigate("/login")}>
-          로그인 하러가기
-        </Button>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-2 w-[320px]"
+      >
+        <SignUpError errors={errors} />
+        <SignUpInputs register={register} />
+        <SignUpButtons isSubmitting={isSubmitting} />
       </form>
     </section>
   );

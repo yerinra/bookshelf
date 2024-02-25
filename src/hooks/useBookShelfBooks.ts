@@ -32,10 +32,10 @@ export default function useBookShelfBooks() {
             doc?.docs?.forEach((doc) => {
               books.push({ ...doc.data() } as Book);
             });
-            console.log("books are", books);
-            const hashtags = [...new Set(books.map((v) => v.hashtags).flat())];
+
             setBookList(books);
 
+            const hashtags = [...new Set(books.map((v) => v.hashtags).flat())];
             setAllTags(hashtags);
           });
         }

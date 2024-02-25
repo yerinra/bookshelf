@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle, logInWithEmailAndPassword } from "../service/auth";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../store/userState";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
-import H1 from "../components/H1";
-import Button from "../components/button/Button";
+import H1 from "../components/atoms/H1";
+import LoginButtons from "../components/molecules/LoginForm/LoginButtons";
+import LoginFormField from "../components/molecules/LoginForm/LoginFormField";
 
 const LogInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [currentUser, setCurrentUser] = useRecoilState(userState);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,37 +60,13 @@ const LogInPage = () => {
   return (
     <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
       <H1>Log In</H1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={email}
-          required
-          onChange={handleInputChange}
-          className="input w-[320px] pl-3 py-2 rounded-md"
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={password}
-          required
-          onChange={handleInputChange}
-          className="input w-[320px] pl-3 py-2 rounded-md"
-        />
-        <Button type="submit">로그인</Button>
-      </form>
-      <div className="w-[320px]">
-        <Button onClick={handleGoogleLogin} theme="accent">
-          구글 계정으로 로그인
-        </Button>
-      </div>
-      <div className="w-[320px]">
-        <Button onClick={() => navigate("/signup")} theme="reverse">
-          회원가입
-        </Button>
-      </div>
+      <LoginFormField
+        email={email}
+        password={password}
+        onInputChange={handleInputChange}
+        onSubmit={handleSubmit}
+      />
+      <LoginButtons handleClick={handleGoogleLogin} />
     </section>
   );
 };

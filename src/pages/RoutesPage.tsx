@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
-import BasicLayout from "../components/BasicLayout";
+import BasicLayout from "../components/templates/BasicLayout";
 import LogInPage from "./LogInPage";
 import InfoPage from "./InfoPage";
 import ErrorPage from "./ErrorPage";
@@ -9,7 +9,7 @@ import BookDetailPage from "./BookDetailPage";
 import BookShelfPage from "./BookShelfPage";
 import HomePage from "./HomePage";
 import BookSearchResultPage from "./BookSearchResultPage";
-import ProtectedRoute from "../components/ProtectedRoute";
+import ProtectedRoute from "../components/organisms/ProtectedRoute";
 
 const RoutesPage = () => {
   return (

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;500;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,24 +43,8 @@ body.dark {
 }
 
 @layer components {
-  .input {
-    @apply bg-l-bg-primary dark:bg-d-bg-secondary border border-l-border dark:border-d-border hover:border-l-text-secondary focus:border-l-text-primary focus:dark:border-d-text-primary hover:dark:border-d-text-secondary;
-  }
-
-  .input::placeholder {
-    @apply text-l-text-secondary;
-  }
-
-  .input:focus {
-    @apply outline-l-text-secondary dark:outline-d-text-secondary;
-  }
-
   .skeleton {
     @apply bg-l-border dark:bg-d-border rounded-lg;
-  }
-
-  .errorMessage {
-    @apply text-error;
   }
 
   /* .my-react-select-container */

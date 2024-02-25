@@ -1,19 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
-import BookCard from "../components/BookCard";
+import BookSearchResultCard from "../components/organisms/BookSearchResultCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
 import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
-import SkeletonSearchResult from "../components/SkeletonSearchResult";
+import SkeletonSearchResult from "../components/organisms/Skeletons/SkeletonSearchResult";
 import { Book } from "../lib/types";
 import useUpdatedBooks from "../hooks/useUpdatedBooks";
+import NoResult from "../components/molecules/BookSearchResult/NoResult";
 
 export default function BookSearchResultPage() {
   const { keyword } = useParams();
   const { isLoading, hasNextPage, fetchNextPage, data } = useBooks(keyword);
   const currentUser = useRecoilValue(userState);
+  const navigate = useNavigate();
 
   const finalData: Book[] = data?.pages.map((v) => v.item)[0];
 
@@ -43,6 +45,11 @@ export default function BookSearchResultPage() {
           rating: 0,
           createdAt: serverTimestamp(),
         });
+      } else {
+        if (currentUser === null) {
+          alert("로그인하셔야 합니다.");
+          navigate("/login");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -66,16 +73,18 @@ export default function BookSearchResultPage() {
         {data &&
           finalData?.length > 0 &&
           data?.pages.map((page) =>
-            page.item.map((book: Book) => (
-              <BookCard
-                book={book}
-                key={`${book.isbn13}`}
-                handleAdd={handleAdd}
-                handleDelete={handleDelete}
-              />
-            ))
+            page.item
+              .filter((p: Book) => p.isbn13)
+              .map((book: Book) => (
+                <BookSearchResultCard
+                  book={book}
+                  key={`${book.isbn13}`}
+                  handleAdd={handleAdd}
+                  handleDelete={handleDelete}
+                />
+              ))
           )}
-        {finalData?.length == 0 && <div>검색 결과가 없습니다.</div>}
+        {finalData?.length == 0 && <NoResult />}
       </main>
       <div ref={scrollRef} />
     </>

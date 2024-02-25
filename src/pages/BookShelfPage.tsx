@@ -11,15 +11,17 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  collection,
+  getDocs,
 } from "firebase/firestore";
-import MyBook from "../components/MyBook";
 import { hashtagsState, selectedTagState } from "../store/hashtagsState";
 import { Book, SortOptions } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
-import Tags from "../components/Tags";
+import Tags from "../components/molecules/BookShelf/Tags";
 import { toast } from "sonner";
 import useSort from "../hooks/useSort";
-import useThemeMode from "../hooks/useThemeMode";
+import BookShelfCard from "../components/organisms/BookShelfCard";
+import { OPTIONS } from "../lib/constants";
 
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
@@ -28,14 +30,6 @@ const BookShelfPage = () => {
   const allTags = useRecoilValue(hashtagsState);
   const [selectedTag, setSelectedTag] = useRecoilState(selectedTagState);
   const [categorizedBooks] = useRecoilState(categorizedBookState);
-  const [theme] = useThemeMode();
-
-  const options = [
-    { value: "createdAt", label: "추가 순" },
-    { value: "title", label: "제목 순" },
-    { value: "author", label: "작가 순" },
-    { value: "rating", label: "별점 순" },
-  ];
 
   useBookShelfBooks();
 
@@ -46,22 +40,6 @@ const BookShelfPage = () => {
   }, [categorizedBooks, setSelectedTag]);
 
   const { sortedBooks, setSortBy } = useSort();
-
-  const handleTagRemove = async (tagName: string, isbn13: string) => {
-    try {
-      if (currentUser) {
-        await updateDoc(doc(db, "users", currentUser, "books", isbn13), {
-          hashtags: arrayRemove(tagName),
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewHashtag(e.target.value);
-  };
 
   const handleAddTag = async (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -89,6 +67,22 @@ const BookShelfPage = () => {
     }
   };
 
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewHashtag(e.target.value);
+  };
+
+  const handleTagRemove = async (tagName: string, isbn13: string) => {
+    try {
+      if (currentUser) {
+        await updateDoc(doc(db, "users", currentUser, "books", isbn13), {
+          hashtags: arrayRemove(tagName),
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleSelectTag = (tagName: string) => {
     if (selectedTag == tagName) {
       setSelectedTag(null);
@@ -106,11 +100,20 @@ const BookShelfPage = () => {
     }
   };
 
-  const updateRating = async (isbn13: string, num: number) => {
+  const updateRating = async (isbn13: string, ratingCount: number) => {
     try {
       if (currentUser) {
+        const arr: Book[] = [];
         const bookDocRef = doc(db, "users", currentUser, "books", isbn13);
-        await updateDoc(bookDocRef, { rating: num });
+        const querySnapshot = await getDocs(
+          collection(db, "users", currentUser, "books")
+        );
+        querySnapshot.forEach((doc) => {
+          arr.push(doc.data() as Book);
+        });
+
+        if (arr.find((v) => v.isbn13 == isbn13))
+          await updateDoc(bookDocRef, { rating: ratingCount });
       }
     } catch (err) {
       console.error(err);
@@ -121,49 +124,37 @@ const BookShelfPage = () => {
     <section className="flex flex-col items-center mt-10 gap-5 w-full">
       <div className="flex justify-between w-4/5 items-center">
         <h1 className="font-bold ml-10 md:ml-36">나의 책장</h1>
-        <div className="mr-10 ">
-          <Select
-            options={options}
-            onChange={(option) => {
-              if (option) setSortBy(option.value as SortOptions);
-            }}
-            className="my-react-select-container"
-            classNamePrefix="my-react-select"
-            theme={(theme) => ({
-              ...theme,
-              borderRadius: 5,
-              colors: {
-                ...theme.colors,
-                text: "#000",
-                font: "#000",
-                primary25: "#ffbb55",
-                primary: "#000",
-              },
-            })}
-          />
-        </div>
+        <Select
+          options={OPTIONS}
+          onChange={(option) => {
+            if (option) setSortBy(option.value as SortOptions);
+          }}
+          className="my-react-select-container mr-10"
+          classNamePrefix="my-react-select"
+        />
       </div>
+
       <div className="flex flex-col md:flex-row-reverse gap-2">
-        <section>
-          <Tags
-            allTags={allTags}
-            handleSelectTag={handleSelectTag}
-            selectedTag={selectedTag}
-          />
-        </section>
+        <Tags
+          allTags={allTags}
+          handleSelectTag={handleSelectTag}
+          selectedTag={selectedTag}
+        />
+
         <main className="flex flex-col items-center md:ml-10">
           {bookList.length == 0 && <>책이 없습니다.</>}
-          {sortedBooks.map((book: Book) => (
-            <MyBook
-              key={book.isbn13}
-              book={book}
-              handleTagRemove={handleTagRemove}
-              handleTagChange={handleTagChange}
-              handleAddTag={handleAddTag}
-              handleBookRemove={handleBookRemove}
-              updateRating={updateRating}
-            />
-          ))}
+          {sortedBooks.length > 0 &&
+            sortedBooks.map((book: Book) => (
+              <BookShelfCard
+                key={book.isbn13}
+                book={book}
+                handleTagRemove={handleTagRemove}
+                handleTagChange={handleTagChange}
+                handleAddTag={handleAddTag}
+                handleBookRemove={handleBookRemove}
+                updateRating={updateRating}
+              />
+            ))}
         </main>
       </div>
     </section>
