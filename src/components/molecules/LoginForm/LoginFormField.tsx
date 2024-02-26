@@ -16,7 +16,10 @@ export default function LoginFormField({
   onSubmit,
 }: LoginFormFieldProps) {
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-2 w-[320px]">
+    <form
+      onSubmit={onSubmit}
+      className="flex flex-col gap-2 w-[280px] sm:w-[320px]"
+    >
       <Input
         name="email"
         type="email"

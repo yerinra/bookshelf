@@ -48,7 +48,7 @@ export default function SignUpPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 w-[320px]"
+        className="flex flex-col gap-2 w-[280px] sm:w-[320px]"
       >
         <SignUpError errors={errors} />
         <SignUpInputs register={register} />
