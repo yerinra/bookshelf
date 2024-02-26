@@ -4,7 +4,7 @@ import { FrameIcon } from "@radix-ui/react-icons";
 
 export default function Logo() {
   return (
-    <Link to="/" className="flex items-center justify-center gap-3">
+    <Link to="/" className="hidden sm:flex items-center justify-center gap-3">
       <Button theme="circle-accent">
         <FrameIcon width="20" height="20" />
       </Button>

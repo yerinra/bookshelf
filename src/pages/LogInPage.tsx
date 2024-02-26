@@ -58,7 +58,7 @@ const LogInPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
+    <section className="flex flex-col gap-2 w-full h-full items-center font-medium">
       <H1>Log In</H1>
       <LoginFormField
         email={email}

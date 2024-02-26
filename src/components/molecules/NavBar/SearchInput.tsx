@@ -16,7 +16,10 @@ const SearchInput = () => {
   };
 
   return (
-    <form className="hidden md:flex px-5 w-full" onSubmit={handleSubmit}>
+    <form
+      className="flex sm:flex mx-10 lg:mx-20 w-3/4 sm:w-full"
+      onSubmit={handleSubmit}
+    >
       <Input
         type="text"
         value={keyword}

@@ -35,14 +35,13 @@ export default function Button({
       break;
     case "circle-accent":
       customClassNames =
-        "p-2 text-2xl flex justify-center items-center font-extrabold bg-accent border-none rounded-full hover:bg-accent w-[48px]";
+        "flex p-2 text-2xl font-extrabold bg-accent border-none rounded-full hover:bg-accent w-[48px]";
       break;
-    case "sm-nav":
-      customClassNames = "w-[80px] h-[45px] border-none hidden sm:block";
+    case "ghost-menu":
+      customClassNames =
+        "p-2 text-2xl font-extrabold border-none hover:bg-l-border hover:dark:bg-d-border w-[46px] block sm:hidden ml-2 mr-5 sm:mr-10";
       break;
-    case "md-nav":
-      customClassNames = "w-[80px] h-[45px] border-none hidden md:block";
-      break;
+
     default:
       "";
   }
