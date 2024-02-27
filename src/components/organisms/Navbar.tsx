@@ -6,11 +6,16 @@ import { userState } from "../../store/userState";
 import SearchInput from "../molecules/NavBar/SearchInput";
 import { toast } from "sonner";
 import Logo from "../molecules/NavBar/Logo";
-import LoggedOutButtons from "../molecules/NavBar/LoggedOutButtons";
-import LoggedInButtons from "../molecules/NavBar/LoggedInButtons";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import Button from "../atoms/Button";
+import { useState } from "react";
+import NavButtons from "../molecules/NavBar/NavButtons";
+import BackgroundBlur from "../molecules/NavBar/BackgroundBlur";
+import SlidingMenu from "../molecules/NavBar/SlidingMenu";
 
 export default function NavBar() {
   const [user, setUser] = useRecoilState(userState);
+  const [navOpen, setNavOpen] = useState(false);
   const navigate = useNavigate();
 
   const logOut = async () => {
@@ -24,16 +29,35 @@ export default function NavBar() {
     }
   };
 
+  const closeNav = () => {
+    setNavOpen(false);
+  };
+
   return (
-    <nav className="flex justify-between mx-20 py-3">
+    <nav className="flex items-center md:mx-20 py-3">
+      <Button theme="ghost-menu" onClick={() => setNavOpen(true)}>
+        <HamburgerMenuIcon width={28} height={28} />
+      </Button>
       <Logo />
-      <section className="flex items-center">
+      <BackgroundBlur navOpen={navOpen} closeNav={closeNav} />
+      <SlidingMenu
+        user={user}
+        navOpen={navOpen}
+        logOut={logOut}
+        onClose={closeNav}
+      />
+      <div className="flex flex-1 items-center">
         <SearchInput />
-      </section>
-      <section className="flex gap-3 items-center pr-2">
-        {user && <LoggedInButtons logOut={logOut} />}
-        {!user && <LoggedOutButtons />}
-      </section>
+      </div>
+      <div className="flex gap-3 items-center pr-2">
+        <NavButtons
+          user={user}
+          classNames="hidden sm:flex"
+          closeNav={closeNav}
+          logOut={logOut}
+          direction="row"
+        />
+      </div>
     </nav>
   );
 }

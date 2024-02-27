@@ -7,6 +7,7 @@ type ButtonProps = {
   onClick?: () => void;
   disabled?: boolean;
   type?: "submit";
+  aria?: string;
 };
 
 export default function Button({
@@ -15,6 +16,7 @@ export default function Button({
   onClick,
   disabled,
   type,
+  aria,
 }: ButtonProps) {
   let customClassNames;
   switch (theme) {
@@ -55,6 +57,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       type={type}
+      aria-label={aria}
     >
       {children}
     </button>

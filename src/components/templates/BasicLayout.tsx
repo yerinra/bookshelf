@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 
 export default function BasicLayout() {
   return (
-    <div className="flex flex-col mx-auto max-w-[976px] justify-center w-full h-full">
+    <section className="flex flex-col max-w-[976px] justify-between mx-auto w-screen h-screen p-8 pb-0">
       <NavBar />
 
       <section className="flex justify-center items-center">
@@ -15,6 +15,6 @@ export default function BasicLayout() {
         <ScrollTopBtn />
       </section>
       <Footer />
-    </div>
+    </section>
   );
 }
