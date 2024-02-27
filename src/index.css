@@ -20,7 +20,7 @@
   width: 100vw;
   height: 100vh;
   margin: auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
   box-sizing: border-box;
 }
@@ -42,6 +42,42 @@ body {
 
 body.dark {
   @apply text-d-text-primary bg-d-bg-primary;
+}
+
+body {
+  --scrollbar-thumb-color: #666; /* default color for light mode */
+  --scrollbar-track-color: #ebebeb; /* default color for light mode */
+  --scrollbar-thumb-hover-color: #000;
+}
+
+/* Light Mode Styles */
+.bookList {
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+  scrollbar-width: thin;
+}
+
+.bookList::-webkit-scrollbar {
+  width: 7px;
+}
+
+.bookList::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-color);
+}
+
+.bookList::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  transition: all 0.2s;
+}
+
+.bookList::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover-color);
+}
+
+/* Dark Mode Styles */
+body.dark {
+  --scrollbar-thumb-color: #000; /* Adjust the color for dark mode */
+  --scrollbar-track-color: #333; /* Adjust the background color for dark mode */
+  --scrollbar-thumb-hover-color: #666;
 }
 
 @layer components {
