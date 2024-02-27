@@ -9,18 +9,16 @@ type Tags = {
 
 export default function Tags({ allTags, handleSelectTag, selectedTag }: Tags) {
   return (
-    <section className="flex gap-5 mb-3 py-5 p-10 rounded-lg dark:border-d-border ">
-      <div className="flex flex-row md:flex-col gap-2 flex-wrap">
-        {allTags &&
-          allTags.map((tag, i) => (
-            <Tag
-              key={`${tag}-${i}`}
-              tag={tag}
-              handleSelectTag={handleSelectTag}
-              selectedTag={selectedTag}
-            />
-          ))}
-      </div>
+    <section className="flex sm:flex-col gap-2 flex-wrap mb-3 sm:p-0 rounded-lg dark:border-d-border w-full justify-center items-center sm:items-start sm:justify-start sm:w-1/3">
+      {allTags &&
+        allTags.map((tag, i) => (
+          <Tag
+            key={`${tag}-${i}`}
+            tag={tag}
+            handleSelectTag={handleSelectTag}
+            selectedTag={selectedTag}
+          />
+        ))}
     </section>
   );
 }
