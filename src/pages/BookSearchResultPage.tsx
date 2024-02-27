@@ -10,6 +10,7 @@ import SkeletonSearchResult from "../components/organisms/Skeletons/SkeletonSear
 import { Book } from "../lib/types";
 import useUpdatedBooks from "../hooks/useUpdatedBooks";
 import NoResult from "../components/molecules/BookSearchResult/NoResult";
+import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 export default function BookSearchResultPage() {
   const { keyword } = useParams();
@@ -68,6 +69,10 @@ export default function BookSearchResultPage() {
 
   return (
     <>
+      <SEOMetaTags
+        title={`${keyword} 검색 결과 - BOOK:SHELF`}
+        desc="책 검색 결과 페이지입니다."
+      />
       <main className="flex-col p-10">
         {isLoading && <SkeletonSearchResult />}
         {data &&

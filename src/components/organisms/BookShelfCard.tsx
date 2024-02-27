@@ -29,7 +29,7 @@ export default function BookShelfCard({
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-col max-w-sm min-w-[375px] relative gap-5 justify-center items-start border border-l-border dark:border-d-border rounded-lg px-4 py-2 mb-2">
+    <section className="flex flex-col w-full relative gap-5 justify-center items-start  px-4 py-2 mb-2 hover:bg-l-bg-secondary hover:dark:bg-d-bg-secondary">
       <div className="flex flex-col w-full items-start gap-3 p-3 rounded-xl">
         <TitleAndAuthorInfo
           onClick={() => navigate(`/book/${book.isbn13}`)}

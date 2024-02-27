@@ -5,6 +5,7 @@ import RoutesPage from "./pages/RoutesPage";
 import useThemeMode from "./hooks/useThemeMode";
 import useUser from "./hooks/useUser";
 import { Toaster } from "sonner";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   const queryClient = new QueryClient();
@@ -13,6 +14,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Helmet>
+        <title>BOOKSHELF: 나의 온라인 책장</title>
+      </Helmet>
       <Router>
         <RoutesPage />
         <Toaster position="top-center" />

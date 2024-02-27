@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import useSort from "../hooks/useSort";
 import BookShelfCard from "../components/organisms/BookShelfCard";
 import { OPTIONS } from "../lib/constants";
+import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
@@ -121,43 +122,49 @@ const BookShelfPage = () => {
   };
 
   return (
-    <section className="flex flex-col items-center mt-10 gap-5 w-full">
-      <div className="flex justify-between w-4/5 items-center">
-        <h1 className="font-bold ml-10 md:ml-36">나의 책장</h1>
-        <Select
-          options={OPTIONS}
-          onChange={(option) => {
-            if (option) setSortBy(option.value as SortOptions);
-          }}
-          className="my-react-select-container mr-10"
-          classNamePrefix="my-react-select"
-        />
-      </div>
+    <>
+      <SEOMetaTags
+        title={`${currentUser}의 책장 - BOOK:SHELF`}
+        desc={`${currentUser}의 책장입니다.`}
+      />
+      <section className="flex flex-col justify-center items-center mt-6 gap-5 w-[800px]">
+        <h1 className="font-bold text-xl">나의 책장 📖</h1>
+        <div className="flex w-full ml-20">
+          <Select
+            options={OPTIONS}
+            onChange={(option) => {
+              if (option) setSortBy(option.value as SortOptions);
+            }}
+            className="my-react-select-container"
+            classNamePrefix="my-react-select"
+          />
+        </div>
 
-      <div className="flex flex-col md:flex-row-reverse gap-2">
-        <Tags
-          allTags={allTags}
-          handleSelectTag={handleSelectTag}
-          selectedTag={selectedTag}
-        />
+        <div className="flex flex-col sm:flex-row-reverse gap-2 w-full">
+          <Tags
+            allTags={allTags}
+            handleSelectTag={handleSelectTag}
+            selectedTag={selectedTag}
+          />
 
-        <main className="flex flex-col items-center md:ml-10">
-          {bookList.length == 0 && <>책이 없습니다.</>}
-          {sortedBooks.length > 0 &&
-            sortedBooks.map((book: Book) => (
-              <BookShelfCard
-                key={book.isbn13}
-                book={book}
-                handleTagRemove={handleTagRemove}
-                handleTagChange={handleTagChange}
-                handleAddTag={handleAddTag}
-                handleBookRemove={handleBookRemove}
-                updateRating={updateRating}
-              />
-            ))}
-        </main>
-      </div>
-    </section>
+          <main className="flex flex-col items-center h-[450px] mx-5 border border-l-border dark:border-d-border rounded-lg overflow-y-auto bookList">
+            {bookList.length == 0 && <>책이 없습니다.</>}
+            {sortedBooks.length > 0 &&
+              sortedBooks.map((book: Book) => (
+                <BookShelfCard
+                  key={book.isbn13}
+                  book={book}
+                  handleTagRemove={handleTagRemove}
+                  handleTagChange={handleTagChange}
+                  handleAddTag={handleAddTag}
+                  handleBookRemove={handleBookRemove}
+                  updateRating={updateRating}
+                />
+              ))}
+          </main>
+        </div>
+      </section>
+    </>
   );
 };
 export default BookShelfPage;

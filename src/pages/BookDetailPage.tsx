@@ -9,6 +9,7 @@ import SkeletonBookDetail from "../components/organisms/Skeletons/SkeletonBookDe
 import { BookInfo } from "../lib/types";
 import useUpdatedBooks from "../hooks/useUpdatedBooks";
 import BookMetaData from "../components/molecules/BookDetail/BookMetaData";
+import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 const BookDetailPage = () => {
   const { isbn } = useParams();
@@ -69,22 +70,28 @@ const BookDetailPage = () => {
   };
 
   return (
-    <main className="mt-16 mx-20 flex">
-      {isLoading && <SkeletonBookDetail />}
+    <>
+      <SEOMetaTags
+        title={`isbn ${isbn} - BOOK:SHELF`}
+        desc={`isbn ${isbn}에 해당하는 책에 관한 상세 정보입니다.`}
+      />
+      <main className="mt-16 mx-20 flex">
+        {isLoading && <SkeletonBookDetail />}
 
-      {selectedData &&
-        selectedData.map((data: BookInfo) => (
-          <section key={data.isbn13} className="flex flex-col gap-8">
-            {isbn && (
-              <BookMetaData
-                book={data}
-                added={bookList?.map((v) => v.isbn13).includes(isbn)}
-                handleClick={handleClick}
-              />
-            )}
-          </section>
-        ))}
-    </main>
+        {selectedData &&
+          selectedData.map((data: BookInfo) => (
+            <section key={data.isbn13} className="flex flex-col gap-8">
+              {isbn && (
+                <BookMetaData
+                  book={data}
+                  added={bookList?.map((v) => v.isbn13).includes(isbn)}
+                  handleClick={handleClick}
+                />
+              )}
+            </section>
+          ))}
+      </main>
+    </>
   );
 };
 

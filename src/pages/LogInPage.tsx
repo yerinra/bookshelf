@@ -8,6 +8,7 @@ import { db } from "../service/firebase";
 import H1 from "../components/atoms/H1";
 import LoginButtons from "../components/molecules/LoginForm/LoginButtons";
 import LoginFormField from "../components/molecules/LoginForm/LoginFormField";
+import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 const LogInPage = () => {
   const [email, setEmail] = useState("");
@@ -58,16 +59,22 @@ const LogInPage = () => {
   };
 
   return (
-    <section className="flex flex-col gap-2 w-full h-full items-center font-medium">
-      <H1>Log In</H1>
-      <LoginFormField
-        email={email}
-        password={password}
-        onInputChange={handleInputChange}
-        onSubmit={handleSubmit}
+    <>
+      <SEOMetaTags
+        title={`로그인 - BOOK:SHELF`}
+        desc={`로그인 페이지입니다.`}
       />
-      <LoginButtons handleClick={handleGoogleLogin} />
-    </section>
+      <section className="flex flex-col gap-2 w-full h-full items-center font-medium">
+        <H1>Log In</H1>
+        <LoginFormField
+          email={email}
+          password={password}
+          onInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+        />
+        <LoginButtons handleClick={handleGoogleLogin} />
+      </section>
+    </>
   );
 };
 

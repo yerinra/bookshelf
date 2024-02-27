@@ -10,6 +10,7 @@ import H1 from "../components/atoms/H1";
 import SignUpError from "../components/molecules/SignUpForm/SignUpError";
 import SignUpButtons from "../components/molecules/SignUpForm/SignUpButtons";
 import SignUpInputs from "../components/molecules/SignUpForm/SignUpInputs";
+import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 export default function SignUpPage() {
   const {
@@ -43,17 +44,23 @@ export default function SignUpPage() {
   };
 
   return (
-    <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
-      <H1>Sign Up</H1>
+    <>
+      <SEOMetaTags
+        title={`회원가입 - BOOK:SHELF`}
+        desc={`회원가입 페이지입니다.`}
+      />
+      <section className="flex flex-col gap-2 w-100 h-100 items-center font-medium">
+        <H1>Sign Up</H1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-2 w-[280px] sm:w-[320px]"
-      >
-        <SignUpError errors={errors} />
-        <SignUpInputs register={register} />
-        <SignUpButtons isSubmitting={isSubmitting} />
-      </form>
-    </section>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-2 w-[280px] sm:w-[320px]"
+        >
+          <SignUpError errors={errors} />
+          <SignUpInputs register={register} />
+          <SignUpButtons isSubmitting={isSubmitting} />
+        </form>
+      </section>
+    </>
   );
 }

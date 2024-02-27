@@ -17,9 +17,9 @@ export default function BookMetaData({
       <img
         src={book.cover}
         alt="book cover image"
-        className="rounded-lg max-w-[240px] mx-auto mb-8"
+        className="rounded-lg max-w-[200px] mx-auto  mb-8 object-cover"
       />
-      <section className="flex flex-col gap-3 md:ml-8 text-start">
+      <section className="flex flex-col gap-3 md:ml-8 text-start mb-28">
         <p className="font-extrabold text-2xl">{book.title}</p>
         <p className="text-neutral-400">{book.author}</p>
         <p>{book.description}</p>

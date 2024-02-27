@@ -8,8 +8,9 @@ export default function DarkModeBtn() {
 
   return (
     <button
-      className="bottom-16 right-5 fixed rounded-full p-1 hidden sm:block"
+      className="bottom-16 right-5 fixed rounded-full p-1 block sm:block"
       onClick={setTheme}
+      aria-label="change theme"
     >
       {theme == "light" && <MoonIcon width="20" height="20" />}
       {theme == "dark" && <SunIcon width="20" height="20" />}
