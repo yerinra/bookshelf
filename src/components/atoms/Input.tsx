@@ -6,6 +6,7 @@ type InputProps = {
   placeholder: string;
   value?: string;
 };
+
 export default function Input({
   type,
   name,

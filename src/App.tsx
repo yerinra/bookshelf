@@ -9,6 +9,7 @@ import { Helmet } from "react-helmet-async";
 
 function App() {
   const queryClient = new QueryClient();
+
   useThemeMode();
   useUser();
 

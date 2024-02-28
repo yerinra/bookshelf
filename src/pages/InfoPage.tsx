@@ -19,9 +19,6 @@ const InfoPage = () => {
           <li>
             6. 추가 순, 제목 순, 작가 순, 별점 순으로 책들을 정렬할 수 있습니다.
           </li>
-          <li className="text-accent">
-            7. 독서 진행 상황을 기록할 수 있습니다. (기다려주세요!)
-          </li>
         </ul>
       </section>
     </>

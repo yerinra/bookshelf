@@ -7,7 +7,11 @@ type BookMarkBtnProps = {
 
 export default function BookMarkBtn({ onClick, added }: BookMarkBtnProps) {
   return (
-    <button className="mt-3" onClick={onClick}>
+    <button
+      className="mt-3"
+      onClick={onClick}
+      aria-label="add or remove book to bookshelf"
+    >
       {added && <BookmarkFilledIcon width="20" height="20" />}
       {!added && <BookmarkIcon width="20" height="20" />}
     </button>

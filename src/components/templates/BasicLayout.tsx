@@ -14,6 +14,7 @@ export default function BasicLayout() {
         <DarkModeBtn />
         <ScrollTopBtn />
       </section>
+
       <Footer />
     </section>
   );

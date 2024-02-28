@@ -58,7 +58,6 @@ function LoggedInButtons({
     "justify-center items-center py-2 h-[48px] rounded-lg border border-l-border dark:border-d-border text-l-text-primary dark:text-d-text-primary hover:bg-l-bg-secondary dark:hover:bg-d-bg-secondary w-[80px] h-[45px] border-none";
   return (
     <section
-      // className={`flex ${direction === "row" ? "flex-row" : "flex-col"}`}
       className={cn("flex", {
         "flex-row": direction === "row",
         "flex-col": direction === "col",
@@ -97,7 +96,6 @@ function LoggedOutButtons({
 
   return (
     <section
-      // className={`flex ${direction === "row" ? "flex-row" : "flex-col"}`}
       className={cn("flex", {
         "flex-row": direction === "row",
         "flex-col": direction === "col",
