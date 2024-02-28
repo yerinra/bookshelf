@@ -8,7 +8,7 @@ import { deleteDoc, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../service/firebase";
 import SkeletonSearchResult from "../components/organisms/Skeletons/SkeletonSearchResult";
 import { Book } from "../lib/types";
-import useUpdatedBooks from "../hooks/useUpdatedBooks";
+import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import NoResult from "../components/molecules/BookSearchResult/NoResult";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
@@ -26,7 +26,7 @@ export default function BookSearchResultPage() {
     fetchNextPage,
   });
 
-  useUpdatedBooks();
+  useBookShelfBooks();
 
   const handleAdd = async (
     isbn13: string,

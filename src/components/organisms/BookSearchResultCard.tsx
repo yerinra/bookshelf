@@ -5,6 +5,7 @@ import { booksState } from "../../store/booksState";
 import { Book } from "../../lib/types";
 import BookMarkBtn from "../molecules/BookSearchResult/BookMarkBtn";
 import TitleAndAuthorInfo from "../molecules/TitleAndAuthorInfo";
+import BookSearchResultImg from "../molecules/BookSearchResult/BookSearchResultImg";
 
 type BookSearchResultCardProps = {
   book: Book;
@@ -40,11 +41,7 @@ export default function BookSearchResultCard({
 
   return (
     <section className="flex gap-5 items-start text-start mx-10 mb-4 border border-1 border-l-border dark:border-d-border px-7 py-5 rounded-lg relative min-h-[12rem] max-w-[56rem]">
-      <img
-        onClick={handleBookClick}
-        src={cover}
-        className="rounded-lg cursor-pointer"
-      />
+      <BookSearchResultImg cover={cover} onClick={handleBookClick} />
       <section className="flex flex-col gap-2">
         <TitleAndAuthorInfo onClick={handleBookClick} book={book} />
         <BookMarkBtn

@@ -9,6 +9,7 @@ type Tag = {
 export default function Tag({ selectedTag, handleSelectTag, tag }: Tag) {
   return (
     <button
+      aria-label="tag"
       className={twMerge(
         "w-fit text-sm py-1 px-3 border bg-l-bg-secondary border-l-border rounded-3xl dark:border-d-border dark:bg-d-bg-secondary text-l-text-primary dark:text-d-text-secondary hover:bg-l-border transition-all hover:dark:bg-d-border",
         selectedTag == tag &&

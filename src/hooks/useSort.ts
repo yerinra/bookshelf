@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { categorizedBookState } from "../store/booksState";
+import { useRecoilValue } from "recoil";
+import { booksState } from "../store/booksState";
 import { SortOptions } from "../lib/types";
 
 export default function useSort() {
-  const [categorizedBooks] = useRecoilState(categorizedBookState);
+  const bookList = useRecoilValue(booksState);
   const [sortBy, setSortBy] = useState<SortOptions>("createdAt");
   const [sortedBooks, setSortedBooks] = useState(
-    [...(categorizedBooks || [])].sort(
+    [...(bookList || [])].sort(
       (x, y) => y.createdAt.seconds - x.createdAt.seconds
     )
   );
 
   useEffect(() => {
-    const newBooks = [...(categorizedBooks || [])].sort((x, y) => {
+    const newBooks = [...(bookList || [])].sort((x, y) => {
       if (sortBy === "createdAt") {
         return x.createdAt.seconds - y.createdAt.seconds;
       }
@@ -29,7 +29,7 @@ export default function useSort() {
       return 0;
     });
     setSortedBooks(newBooks);
-  }, [categorizedBooks, sortBy]);
+  }, [bookList, sortBy]);
 
   return { sortedBooks, setSortBy };
 }

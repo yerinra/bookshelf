@@ -20,6 +20,7 @@ export default function Hashtags({
         >
           <div className="tagName">{tag}</div>
           <button
+            aria-label="remove hashtag"
             className="cursor-pointer"
             onClick={() => {
               handleTagRemove(tag, isbn13);

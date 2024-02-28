@@ -7,7 +7,7 @@ import { userState } from "../store/userState";
 import { booksState } from "../store/booksState";
 import SkeletonBookDetail from "../components/organisms/Skeletons/SkeletonBookDetail";
 import { BookInfo } from "../lib/types";
-import useUpdatedBooks from "../hooks/useUpdatedBooks";
+import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import BookMetaData from "../components/molecules/BookDetail/BookMetaData";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
@@ -28,7 +28,7 @@ const BookDetailPage = () => {
     };
   });
 
-  useUpdatedBooks();
+  useBookShelfBooks();
 
   const handleAdd = async () => {
     try {

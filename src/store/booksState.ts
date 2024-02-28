@@ -5,8 +5,3 @@ export const booksState = atom<Book[]>({
   key: "booksState",
   default: [],
 });
-
-export const categorizedBookState = atom<Book[]>({
-  key: "categorizedBookState",
-  default: [],
-});

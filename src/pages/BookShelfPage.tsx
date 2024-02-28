@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userState } from "../store/userState";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { booksState, categorizedBookState } from "../store/booksState";
+import { useRecoilValue } from "recoil";
+import { booksState } from "../store/booksState";
 import Select from "react-select";
 
 import { db } from "../service/firebase";
@@ -14,8 +14,8 @@ import {
   collection,
   getDocs,
 } from "firebase/firestore";
-import { hashtagsState, selectedTagState } from "../store/hashtagsState";
-import { Book, SortOptions } from "../lib/types";
+
+import { Book, HashTags, SortOptions } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import Tags from "../components/molecules/BookShelf/Tags";
 import { toast } from "sonner";
@@ -27,20 +27,24 @@ import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
   const bookList = useRecoilValue(booksState);
+
+  let allTags: HashTags = [];
+  bookList.forEach((book) => {
+    if (book.hashtags) allTags.push(...book.hashtags);
+  });
+  allTags = [...new Set(allTags)];
+
   const [newHashtag, setNewHashtag] = useState<string | null>("");
-  const allTags = useRecoilValue(hashtagsState);
-  const [selectedTag, setSelectedTag] = useRecoilState(selectedTagState);
-  const [categorizedBooks] = useRecoilState(categorizedBookState);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   useBookShelfBooks();
 
-  useEffect(() => {
-    if (categorizedBooks.length == 0) {
-      setSelectedTag(null);
-    }
-  }, [categorizedBooks, setSelectedTag]);
-
   const { sortedBooks, setSortBy } = useSort();
+  const sortedAndTaggedBooks =
+    sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!))
+      .length == 0
+      ? sortedBooks
+      : sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!));
 
   const handleAddTag = async (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -150,7 +154,7 @@ const BookShelfPage = () => {
           <main className="flex flex-col items-center h-[450px] mx-5 border border-l-border dark:border-d-border rounded-lg overflow-y-auto bookList">
             {bookList.length == 0 && <>책이 없습니다.</>}
             {sortedBooks.length > 0 &&
-              sortedBooks.map((book: Book) => (
+              sortedAndTaggedBooks.map((book: Book) => (
                 <BookShelfCard
                   key={book.isbn13}
                   book={book}
