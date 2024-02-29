@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, Suspense } from "react";
 import { userState } from "../store/userState";
 import { useRecoilValue } from "recoil";
 import { booksState } from "../store/booksState";
@@ -20,9 +20,13 @@ import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import Tags from "../components/molecules/BookShelf/Tags";
 import { toast } from "sonner";
 import useSort from "../hooks/useSort";
-import BookShelfCard from "../components/organisms/BookShelfCard";
+// import BookShelfCard from "../components/organisms/BookShelfCard";
 import { OPTIONS } from "../lib/constants";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
+
+const BookShelfCard = React.lazy(
+  () => import("../components/organisms/BookShelfCard")
+);
 
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
@@ -160,15 +164,17 @@ const BookShelfPage = () => {
             {bookList.length == 0 && <>책이 없습니다.</>}
             {sortedBooks.length > 0 &&
               sortedAndTaggedBooks.map((book: Book) => (
-                <BookShelfCard
-                  key={book.isbn13}
-                  book={book}
-                  handleTagRemove={handleTagRemove}
-                  handleTagChange={handleTagChange}
-                  handleAddTag={handleAddTag}
-                  handleBookRemove={handleBookRemove}
-                  updateRating={updateRating}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <BookShelfCard
+                    key={book.isbn13}
+                    book={book}
+                    handleTagRemove={handleTagRemove}
+                    handleTagChange={handleTagChange}
+                    handleAddTag={handleAddTag}
+                    handleBookRemove={handleBookRemove}
+                    updateRating={updateRating}
+                  />
+                </Suspense>
               ))}
           </main>
         </div>

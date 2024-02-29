@@ -1,5 +1,7 @@
+import { Suspense, lazy } from "react";
 import { cn } from "../../../lib/utils";
 import { useNavigate } from "react-router-dom";
+const LoggedInButtons = lazy(() => import("./LoggedInButtons"));
 
 type NavButtonsProps = {
   user: string | null;
@@ -19,12 +21,14 @@ export default function NavButtons({
   return (
     <div>
       {user && (
-        <LoggedInButtons
-          classNames={classNames}
-          closeNav={closeNav}
-          logOut={logOut}
-          direction={direction}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <LoggedInButtons
+            classNames={classNames}
+            closeNav={closeNav}
+            logOut={logOut}
+            direction={direction}
+          />
+        </Suspense>
       )}
       {!user && (
         <LoggedOutButtons
@@ -37,53 +41,11 @@ export default function NavButtons({
   );
 }
 
-type LoggedOutButtonsProps = {
+export type LoggedOutButtonsProps = {
   classNames: string;
   closeNav: () => void;
   direction: "row" | "col";
 };
-
-type LoggedInButtonsProps = LoggedOutButtonsProps & {
-  logOut: () => Promise<void>;
-};
-
-function LoggedInButtons({
-  logOut,
-  classNames,
-  closeNav,
-  direction,
-}: LoggedInButtonsProps) {
-  const navigate = useNavigate();
-  const buttonsCommonClass =
-    "justify-center items-center py-2 h-[48px] rounded-lg border border-l-border dark:border-d-border text-l-text-primary dark:text-d-text-primary hover:bg-l-bg-secondary dark:hover:bg-d-bg-secondary w-[80px] h-[45px] border-none";
-  return (
-    <section
-      className={cn("flex", {
-        "flex-row": direction === "row",
-        "flex-col": direction === "col",
-      })}
-    >
-      <button
-        onClick={() => {
-          navigate("/bookshelf");
-          closeNav();
-        }}
-        className={cn(buttonsCommonClass, classNames)}
-      >
-        내 책장
-      </button>
-      <button
-        onClick={() => {
-          logOut();
-          closeNav();
-        }}
-        className={cn(buttonsCommonClass, classNames)}
-      >
-        로그아웃
-      </button>
-    </section>
-  );
-}
 
 function LoggedOutButtons({
   classNames,

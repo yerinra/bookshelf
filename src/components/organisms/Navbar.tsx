@@ -8,10 +8,10 @@ import { toast } from "sonner";
 import Logo from "../molecules/NavBar/Logo";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Button from "../atoms/Button";
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import NavButtons from "../molecules/NavBar/NavButtons";
-import BackgroundBlur from "../molecules/NavBar/BackgroundBlur";
-import SlidingMenu from "../molecules/NavBar/SlidingMenu";
+const BackgroundBlur = lazy(() => import("../molecules/NavBar/BackgroundBlur"));
+const SlidingMenu = lazy(() => import("../molecules/NavBar/SlidingMenu"));
 
 export default function NavBar() {
   const [user, setUser] = useRecoilState(userState);
@@ -39,13 +39,15 @@ export default function NavBar() {
         <HamburgerMenuIcon width={28} height={28} />
       </Button>
       <Logo />
-      <BackgroundBlur navOpen={navOpen} closeNav={closeNav} />
-      <SlidingMenu
-        user={user}
-        navOpen={navOpen}
-        logOut={logOut}
-        onClose={closeNav}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <BackgroundBlur navOpen={navOpen} closeNav={closeNav} />
+        <SlidingMenu
+          user={user}
+          navOpen={navOpen}
+          logOut={logOut}
+          onClose={closeNav}
+        />
+      </Suspense>
       <div className="flex flex-1 items-center">
         <SearchInput />
       </div>

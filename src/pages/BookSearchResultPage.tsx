@@ -1,6 +1,7 @@
+import { Suspense, lazy } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useBooks from "../hooks/useBooks";
-import BookSearchResultCard from "../components/organisms/BookSearchResultCard";
+// import BookSearchResultCard from "../components/organisms/BookSearchResultCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import { useRecoilValue } from "recoil";
 import { userState } from "../store/userState";
@@ -11,6 +12,10 @@ import { Book } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import NoResult from "../components/molecules/BookSearchResult/NoResult";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
+
+const BookSearchResultCard = lazy(
+  () => import("../components/organisms/BookSearchResultCard")
+);
 
 export default function BookSearchResultPage() {
   const { keyword } = useParams();
@@ -83,12 +88,14 @@ export default function BookSearchResultPage() {
             page.item
               .filter((p: Book) => p.isbn13)
               .map((book: Book) => (
-                <BookSearchResultCard
-                  book={book}
-                  key={`${book.isbn13}`}
-                  handleAdd={handleAdd}
-                  handleDelete={handleDelete}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <BookSearchResultCard
+                    book={book}
+                    key={`${book.isbn13}`}
+                    handleAdd={handleAdd}
+                    handleDelete={handleDelete}
+                  />
+                </Suspense>
               ))
           )}
         {isFetchingNextPage && <p>loading...</p>}
