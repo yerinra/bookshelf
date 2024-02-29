@@ -1,17 +1,17 @@
 import axios from "axios";
 
-const BOOKS_PROXY =
-  window.location.hostname === "localhost"
-    ? ""
-    : "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
-const BOOK_PROXY =
-  window.location.hostname === "localhost"
-    ? ""
-    : "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx";
+// const BOOKS_PROXY =
+//   window.location.hostname === "localhost"
+//     ? ""
+//     : "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
+// const BOOK_PROXY =
+//   window.location.hostname === "localhost"
+//     ? ""
+//     : "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx";
 
 export const fetchBooksData = async (keyword: string, pageNum: number) => {
   try {
-    const response = await axios.get(`${BOOKS_PROXY}/keyword`, {
+    const response = await axios.get(`/keyword`, {
       params: {
         Query: keyword,
         Start: pageNum,
@@ -28,7 +28,7 @@ export const fetchBooksData = async (keyword: string, pageNum: number) => {
 
 export const fetchBook = async (isbn13: string) => {
   try {
-    const response = await axios.get(`${BOOK_PROXY}/isbn`, {
+    const response = await axios.get(`/isbn`, {
       params: {
         itemIdType: "ISBN13",
         itemId: isbn13,
