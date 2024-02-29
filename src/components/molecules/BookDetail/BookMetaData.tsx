@@ -19,7 +19,7 @@ const BookMetaData = React.memo(
           <p className="font-extrabold text-2xl">{book.title}</p>
           <p className="text-neutral-400">{book.author}</p>
           <p>{book.description}</p>
-          <p>총 {book.itemPage}쪽</p>
+          {/* <p>총 {book.itemPage}쪽</p> */}
           <div className="md:max-w-[320px]">
             {!added && <AddedButton handleClick={handleClick} />}
             {!!added && <DefaultButton handleClick={handleClick} />}

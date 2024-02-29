@@ -24,7 +24,6 @@ const BookDetailPage = () => {
       cover: v.cover,
       description: v.description,
       isbn13: v.isbn13,
-      itemPage: v?.subInfo?.itemPage,
     };
   });
 
