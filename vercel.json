@@ -2,19 +2,19 @@
   "rewrites": [
     {
       "source": "/keyword/:path*",
-      "destination": "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:path*"
+      "destination": "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx:path*"
     },
     {
       "source": "/keyword/:path*/",
-      "destination": "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx/:path*/"
+      "destination": "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx:path*/"
     },
     {
       "source": "/isbn/:path*",
-      "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx/:path*"
+      "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx:path*"
     },
     {
       "source": "/isbn/:path*/",
-      "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx/:path*/"
+      "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx:path*/"
     }
   ]
 }
