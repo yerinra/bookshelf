@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import Spinner from "../components/molecules/Spinner";
 
 const BasicLayout = lazy(() => import("../components/templates/BasicLayout"));
 const LogInPage = lazy(() => import("./LogInPage"));
@@ -16,7 +17,7 @@ const ProtectedRoute = lazy(
 
 const RoutesPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <Routes>
         <Route path="/login" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />

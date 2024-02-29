@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+
 export const fetchBooksData = async (keyword: string, pageNum: number) => {
   try {
-    const response = await axios.get("/keyword", {
+    const response = await axios.get(`${PROXY}/keyword`, {
       params: {
         Query: keyword,
         Start: pageNum,
@@ -19,7 +21,7 @@ export const fetchBooksData = async (keyword: string, pageNum: number) => {
 
 export const fetchBook = async (isbn13: string) => {
   try {
-    const response = await axios.get("/isbn", {
+    const response = await axios.get(`${PROXY}/isbn`, {
       params: {
         itemIdType: "ISBN13",
         itemId: isbn13,
