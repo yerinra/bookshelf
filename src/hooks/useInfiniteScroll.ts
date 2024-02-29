@@ -5,12 +5,14 @@ type InfiniteScrollProps = {
   isLoading: boolean | undefined;
   hasNextPage: boolean | undefined;
   fetchNextPage: () => Promise<InfiniteQueryObserverResult>;
+  isFetchingNextPage: boolean | undefined;
 };
 
 const useInfiniteScroll = ({
   isLoading,
   hasNextPage,
   fetchNextPage,
+  isFetchingNextPage,
 }: InfiniteScrollProps) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -30,7 +32,7 @@ const useInfiniteScroll = ({
     if (scrollRef.current) {
       observer.observe(scrollRef.current);
     }
-  }, [isLoading, fetchNextPage, hasNextPage]);
+  }, [isLoading, fetchNextPage, hasNextPage, isFetchingNextPage]);
   return scrollRef;
 };
 

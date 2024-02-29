@@ -14,7 +14,8 @@ import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 
 export default function BookSearchResultPage() {
   const { keyword } = useParams();
-  const { isLoading, hasNextPage, fetchNextPage, data } = useBooks(keyword);
+  const { isLoading, hasNextPage, fetchNextPage, data, isFetchingNextPage } =
+    useBooks(keyword);
   const currentUser = useRecoilValue(userState);
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ export default function BookSearchResultPage() {
     isLoading,
     hasNextPage,
     fetchNextPage,
+    isFetchingNextPage,
   });
 
   useBookShelfBooks();
@@ -89,6 +91,7 @@ export default function BookSearchResultPage() {
                 />
               ))
           )}
+        {isFetchingNextPage && <p>loading...</p>}
         {finalData?.length == 0 && <NoResult />}
       </main>
       <div ref={scrollRef} />
