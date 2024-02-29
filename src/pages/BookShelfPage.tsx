@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { userState } from "../store/userState";
 import { useRecoilValue } from "recoil";
 import { booksState } from "../store/booksState";
@@ -27,12 +27,14 @@ import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
 const BookShelfPage = () => {
   const currentUser = useRecoilValue(userState);
   const bookList = useRecoilValue(booksState);
+  const allTags = useMemo(() => {
+    const tags: HashTags = [];
+    bookList.forEach((book) => {
+      if (book.hashtags) tags.push(...book.hashtags);
+    });
 
-  let allTags: HashTags = [];
-  bookList.forEach((book) => {
-    if (book.hashtags) allTags.push(...book.hashtags);
-  });
-  allTags = [...new Set(allTags)];
+    return [...new Set(tags)];
+  }, [bookList]);
 
   const [newHashtag, setNewHashtag] = useState<string | null>("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
@@ -40,11 +42,14 @@ const BookShelfPage = () => {
   useBookShelfBooks();
 
   const { sortedBooks, setSortBy } = useSort();
-  const sortedAndTaggedBooks =
-    sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!))
-      .length == 0
-      ? sortedBooks
-      : sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!));
+  const sortedAndTaggedBooks = useMemo(
+    () =>
+      sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!))
+        .length == 0
+        ? sortedBooks
+        : sortedBooks.filter((book) => book.hashtags?.includes(selectedTag!)),
+    [selectedTag, sortedBooks]
+  );
 
   const handleAddTag = async (
     e: React.KeyboardEvent<HTMLInputElement>,
