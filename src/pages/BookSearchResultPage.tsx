@@ -12,6 +12,7 @@ import { Book } from "../lib/types";
 import useBookShelfBooks from "../hooks/useBookShelfBooks";
 import NoResult from "../components/molecules/BookSearchResult/NoResult";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
+import Spinner from "../components/molecules/Spinner";
 
 const BookSearchResultCard = lazy(
   () => import("../components/organisms/BookSearchResultCard")
@@ -81,24 +82,24 @@ export default function BookSearchResultPage() {
         desc="책 검색 결과 페이지입니다."
       />
       <main className="flex-col p-10">
-        {isLoading && <SkeletonSearchResult />}
+        {isLoading && <Spinner />}
         {data &&
           finalData?.length > 0 &&
           data?.pages.map((page) =>
             page.item
               .filter((p: Book) => p.isbn13)
               .map((book: Book) => (
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense key={book.isbn13} fallback={<SkeletonSearchResult />}>
                   <BookSearchResultCard
                     book={book}
-                    key={`${book.isbn13}`}
+                    key={book.isbn13}
                     handleAdd={handleAdd}
                     handleDelete={handleDelete}
                   />
                 </Suspense>
               ))
           )}
-        {isFetchingNextPage && <p>loading...</p>}
+        {isFetchingNextPage && <SkeletonSearchResult />}
         {finalData?.length == 0 && <NoResult />}
       </main>
       <div ref={scrollRef} />

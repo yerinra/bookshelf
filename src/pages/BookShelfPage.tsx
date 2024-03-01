@@ -23,6 +23,7 @@ import useSort from "../hooks/useSort";
 // import BookShelfCard from "../components/organisms/BookShelfCard";
 import { OPTIONS } from "../lib/constants";
 import { SEOMetaTags } from "../components/molecules/SEOMetaTags";
+import Spinner from "../components/molecules/Spinner";
 
 const BookShelfCard = React.lazy(
   () => import("../components/organisms/BookShelfCard")
@@ -160,11 +161,11 @@ const BookShelfPage = () => {
             selectedTag={selectedTag}
           />
 
-          <main className="flex flex-col items-center h-[450px] mx-5 border border-l-border dark:border-d-border rounded-lg overflow-y-auto bookList">
+          <main className="flex flex-col items-center h-[450px] mx-5 border border-l-border dark:border-d-border rounded-lg overflow-y-auto w-full">
             {bookList.length == 0 && <>책이 없습니다.</>}
             {sortedBooks.length > 0 &&
               sortedAndTaggedBooks.map((book: Book) => (
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense key={book.isbn13} fallback={<Spinner />}>
                   <BookShelfCard
                     key={book.isbn13}
                     book={book}

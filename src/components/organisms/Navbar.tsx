@@ -10,6 +10,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Button from "../atoms/Button";
 import { Suspense, lazy, useState } from "react";
 import NavButtons from "../molecules/NavBar/NavButtons";
+import Spinner from "../molecules/Spinner";
 const BackgroundBlur = lazy(() => import("../molecules/NavBar/BackgroundBlur"));
 const SlidingMenu = lazy(() => import("../molecules/NavBar/SlidingMenu"));
 
@@ -39,7 +40,7 @@ export default function NavBar() {
         <HamburgerMenuIcon width={28} height={28} />
       </Button>
       <Logo />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner />}>
         <BackgroundBlur navOpen={navOpen} closeNav={closeNav} />
         <SlidingMenu
           user={user}

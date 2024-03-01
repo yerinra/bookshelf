@@ -13,7 +13,7 @@ export default function TitleAndAuthorInfo({
   return (
     <>
       <div
-        className="font-semibold text-start text-md cursor-pointer"
+        className="font-semibold text-start text-md cursor-pointer w-full"
         onClick={onClick}
       >
         {title}

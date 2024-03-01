@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { cn } from "../../../lib/utils";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Spinner";
 const LoggedInButtons = lazy(() => import("./LoggedInButtons"));
 
 type NavButtonsProps = {
@@ -21,7 +22,7 @@ export default function NavButtons({
   return (
     <div>
       {user && (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner />}>
           <LoggedInButtons
             classNames={classNames}
             closeNav={closeNav}
