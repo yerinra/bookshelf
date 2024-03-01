@@ -13,13 +13,13 @@ export function SEOMetaTags({ title, desc }: { title: string; desc: string }) {
       <meta property="og:site_name" content="BOOKSHELF : 나의 온라인 책장" />
       <meta property="og:description" content={desc} />
       <meta property="og:image" content="src/og-image.png" />
-      {/* <meta property="og:url" content={url} /> */}
+      <meta property="og:url" content="bookshelf-bay.vercel.app" />
 
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={desc} />
       <meta name="twitter:image" content="src/og-image.png" />
 
-      {/* <link rel="canonical" href={props.url} /> */}
+      <link rel="canonical" href="bookshelf-bay.vercel.app" />
     </Helmet>
   );
 }
