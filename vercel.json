@@ -16,6 +16,5 @@
       "source": "/isbn/:path*/",
       "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx:path*/"
     }
-  ],
-  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
+  ]
 }
