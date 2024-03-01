@@ -15,6 +15,7 @@
     {
       "source": "/isbn/:path*/",
       "destination": "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx:path*/"
-    }
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
