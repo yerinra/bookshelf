@@ -40,7 +40,7 @@ export default function BookSearchResultCard({
   };
 
   return (
-    <section className="flex gap-5 items-start text-start mx-10 mb-4 border border-1 border-l-border dark:border-d-border px-7 py-5 rounded-lg relative min-h-[12rem] max-w-[56rem]">
+    <section className="flex flex-col sm:flex-row gap-5 items-start text-start mx-10 mb-4 border border-1 border-l-border dark:border-d-border px-7 py-5 rounded-lg relative min-h-[12rem] max-w-[56rem]">
       <BookSearchResultImg cover={cover} onClick={handleBookClick} />
       <section className="flex flex-col gap-2">
         <TitleAndAuthorInfo onClick={handleBookClick} book={book} />
