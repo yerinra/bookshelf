@@ -39,7 +39,7 @@ const BookDetailPage = () => {
           isbn13: isbn,
           hashtags: [],
           rating: 0,
-          itemPage: selectedData[0].itemPage,
+          itemPage: 1000,
           createdAt: serverTimestamp(),
         });
       }
